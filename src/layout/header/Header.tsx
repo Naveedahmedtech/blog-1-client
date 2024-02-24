@@ -1,46 +1,75 @@
 // components/HideAppBar.js
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import CssBaseline from '@mui/material/CssBaseline';
-import useScrollTrigger from '@mui/material/useScrollTrigger';
-import Slide from '@mui/material/Slide';
-import Logo from './components/Logo';
+import { useState } from 'react';
+import { AppBar, Toolbar, CssBaseline, IconButton, Box, useTheme, useMediaQuery, Drawer } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import Navigation from './components/Navigation';
 import ProfileMenu from './components/ProfileMenu';
+import Logo from './components/Logo';
+import HideOnScroll from './components/HideOnScroll';
 
-interface Props {
-  window?: () => Window;
-  children: React.ReactElement;
-}
+const HideAppBar = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-function HideOnScroll(props: Props) {
-  const { children, window } = props;
-  const trigger = useScrollTrigger({
-    target: window ? window() : undefined,
-  });
+  const toggleDrawer = (open: any) => (event: any) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+    setMobileMenuOpen(open);
+  };
 
   return (
-    <Slide appear={false} direction="down" in={!trigger}>
-      {children}
-    </Slide>
-  );
-}
-
-export default function HideAppBar(props: Props) {
-  return (
-    <React.Fragment>
+    <>
       <CssBaseline />
-      <HideOnScroll {...props}>
-        <AppBar>
-          <Toolbar>
+      <HideOnScroll>
+        <AppBar >
+          <Toolbar sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", background: "#000" }}>
             <Logo />
-            <Navigation />
-            <ProfileMenu />
+            {!isMobile && (
+              <>
+                <Navigation is_mobile={false} setMobileMenuOpen={setMobileMenuOpen} />
+                <ProfileMenu />
+              </>
+            )}
+            {isMobile && (
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                edge="end"
+                onClick={toggleDrawer(true)}
+              >
+                <MenuIcon />
+              </IconButton>
+            )}
           </Toolbar>
         </AppBar>
       </HideOnScroll>
       <Toolbar />
-    </React.Fragment>
+      <Drawer
+        anchor="right"
+        open={mobileMenuOpen}
+        onClose={toggleDrawer(false)}
+        PaperProps={{
+          sx: {
+            backgroundColor: '#000',
+            color: '#fff',
+            width: 250
+          }
+        }}
+      >
+        <Box
+          role="presentation"
+          // onClick={toggleDrawer(false)}
+        // onKeyDown={toggleDrawer(false)}
+        >
+          <Navigation is_mobile={true} setMobileMenuOpen={setMobileMenuOpen} />
+        </Box>
+      </Drawer>
+
+
+    </>
   );
-}
+};
+
+export default HideAppBar;

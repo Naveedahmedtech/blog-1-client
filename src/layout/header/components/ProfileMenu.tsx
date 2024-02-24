@@ -1,9 +1,9 @@
-// components/ProfileMenu.js
-import * as React from 'react';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import React from 'react';
+import { IconButton, Menu } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import Logout from '@mui/icons-material/Logout';
+import Profile from '@mui/icons-material/Person';
+import ProfileMenuItem from './ProfileMenuItem'; // Import the new component
 
 const ProfileMenu = () => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -34,21 +34,15 @@ const ProfileMenu = () => {
             </IconButton>
             <Menu
                 anchorEl={anchorEl}
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                }}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                 id={menuId}
                 keepMounted
-                transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                }}
+                transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                 open={isMenuOpen}
                 onClose={handleMenuClose}
             >
-                <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-                <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+                <ProfileMenuItem icon={<Profile fontSize="small" />} text="Profile" path="/profile" />
+                <ProfileMenuItem icon={<Logout fontSize="small" />} text="Logout" path="/logout" />
             </Menu>
         </>
     );
