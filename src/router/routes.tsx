@@ -3,7 +3,7 @@ import { createBrowserRouter, createRoutesFromElements, Route } from 'react-rout
 import PrivateRouteWrapper from './components/PrivateRouteWrapper';
 import PublicRouteWrapper from './components/PublicRouteWrapper';
 import { Header } from '../layout';
-import { Login } from '../pages/auth';
+import { Login, Register } from '../pages/auth';
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -13,6 +13,7 @@ export const router = createBrowserRouter(
             </Route>
             <Route element={<PublicRouteWrapper />}>
                 <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
                 {/* Add more public routes here */}
             </Route>
         </>

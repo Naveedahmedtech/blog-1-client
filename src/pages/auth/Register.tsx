@@ -4,12 +4,14 @@ import { Card, CardContent, Typography, Container } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import { AccountCircle } from '@mui/icons-material';
-import ForgotPasswordLink from './components/ForgotPasswordLink';
 import FormInputField from '../../components/form/FormInputField';
-import { Link } from 'react-router-dom';
 import ActionButton from './components/LoginButton';
+import { useRegisterMutation } from '../../redux/features/authApi';
 
 const validationSchema = yup.object({
+    username: yup
+        .string()
+        .required('Username is required'),
     email: yup
         .string()
         .email('Enter a valid email')
@@ -20,16 +22,18 @@ const validationSchema = yup.object({
         .required('Password is required'),
 });
 
-
-const Login = () => {
+const Register = () => {
+    const [register, { isLoading }] = useRegisterMutation();
     const formik = useFormik({
         initialValues: {
+            username: '',
             email: '',
             password: '',
         },
         validationSchema,
-        onSubmit: values => {
+        onSubmit: async (values) => {
             console.log(values);
+            const response = await register(values).unwrap();
         },
     });
 
@@ -60,16 +64,14 @@ const Login = () => {
                 }}>
                     <AccountCircle sx={{ fontSize: 60, my: 2, color: 'primary.main' }} />
                     <Typography variant="h5" component="h2" gutterBottom sx={{ color: 'text.primary' }}>
-                        Sign in
+                        Register
                     </Typography>
                     <form onSubmit={formik.handleSubmit} style={{ width: '100%' }} noValidate>
+                        <FormInputField name="username" label="User Name" type="text" icon={<AccountCircle />} formik={formik} />
                         <FormInputField name="email" label="Email Address" type="email" icon={<EmailIcon />} formik={formik} />
                         <FormInputField name="password" label="Password" type="password" icon={<LockIcon />} formik={formik} />
-                        <ActionButton actionText="Sign in" />
-                        <ForgotPasswordLink />
-                        <>
-                        <Link to="/register">Sign up</Link>
-                        </>
+                        <ActionButton actionText="Register" />
+                        {/* <ForgotPasswordLink /> */}
                     </form>
                 </CardContent>
             </Card>
@@ -77,4 +79,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Register;

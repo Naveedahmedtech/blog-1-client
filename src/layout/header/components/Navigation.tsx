@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import '../styles/navigation.css'; // Make sure the path is correct
-import { RootState } from '../../../redux/store'; // Ensure correct path
+// import { RootState } from '../../../redux/store'; // Ensure correct path
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleDropdown } from '../../../redux/features/dropdownSlice'; // Ensure correct path
 import navigationLinks from '../../../utlis/navigationLinks';
@@ -10,7 +10,7 @@ import useOutsideClick from '../../../hooks/useOutsideClick';
 
 const Navigation = ({ is_mobile, setMobileMenuOpen } :any ) => {
     const dispatch = useDispatch();
-    const openDropdownIndex = useSelector((state: RootState) => state.dropdown.openDropdownIndex);
+    const openDropdownIndex = useSelector((state: any) => state.dropdown.openDropdownIndex);
     const handleToggleDropdown = (index: number) => {
         dispatch(toggleDropdown(index));
     };

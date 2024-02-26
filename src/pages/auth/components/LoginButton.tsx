@@ -1,11 +1,11 @@
 import { Button } from '@mui/material';
 
-const LoginButton = () => {
+const ActionButton = ({ actionText } : any) => {
     return (
         <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            Sign In
+            {actionText}
         </Button>
     );
 };
 
-export default LoginButton;
+export default ActionButton;

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { TextField, InputAdornment, IconButton } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import LockIcon from '@mui/icons-material/Lock';
 import EmailIcon from '@mui/icons-material/Email'; // Import EmailIcon
 
-const FormInputField = ({ name, label, type, formik } : any) => {
+const FormInputField = ({ name, label, type, formik, icon }: any) => {
     const [showPassword, setShowPassword] = useState(false);
 
     // Toggle visibility of the password
@@ -41,7 +41,13 @@ const FormInputField = ({ name, label, type, formik } : any) => {
                     ),
                 };
             default:
-                return {};
+                return {
+                    startAdornment: (
+                        <InputAdornment position="start">
+                            {icon}
+                        </InputAdornment>
+                    ),
+                };
         }
     };
 
