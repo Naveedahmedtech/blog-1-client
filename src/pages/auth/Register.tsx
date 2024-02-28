@@ -7,6 +7,7 @@ import { AccountCircle } from '@mui/icons-material';
 import FormInputField from '../../components/form/FormInputField';
 import ActionButton from './components/LoginButton';
 import { useRegisterMutation } from '../../redux/features/authApi';
+import { useNavigate } from 'react-router-dom';
 
 const validationSchema = yup.object({
     username: yup
@@ -23,6 +24,7 @@ const validationSchema = yup.object({
 });
 
 const Register = () => {
+    const navigate = useNavigate();
     const [register, { isLoading }] = useRegisterMutation();
     const formik = useFormik({
         initialValues: {
@@ -37,6 +39,7 @@ const Register = () => {
             // console.log(values);
             try {
                 const response = await register(values).unwrap();
+                navigate('/login')
                 console.log(response);
 
             } catch (error) {
