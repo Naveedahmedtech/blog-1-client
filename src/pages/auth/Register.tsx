@@ -31,9 +31,18 @@ const Register = () => {
             password: '',
         },
         validationSchema,
-        onSubmit: async (values) => {
-            console.log(values);
-            const response = await register(values).unwrap();
+        onSubmit: async (values: any) => {
+            values.hashedPassword = values.password;
+            delete values.password;
+            // console.log(values);
+            try {
+                const response = await register(values).unwrap();
+                console.log(response);
+
+            } catch (error) {
+                console.log(error);
+            }
+
         },
     });
 
