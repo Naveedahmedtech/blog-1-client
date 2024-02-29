@@ -14,7 +14,6 @@ export const router = createBrowserRouter(
             <Route element={<PublicRouteWrapper />}>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                {/* Add more public routes here */}
             </Route>
         </>
     )

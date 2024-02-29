@@ -6,8 +6,10 @@ import LockIcon from '@mui/icons-material/Lock';
 import { AccountCircle } from '@mui/icons-material';
 import ForgotPasswordLink from './components/ForgotPasswordLink';
 import FormInputField from '../../components/form/FormInputField';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ActionButton from './components/LoginButton';
+import { useLoginMutation } from '../../redux/features/authApi';
+import { useAuth } from '../../hooks/useAuth';
 
 const validationSchema = yup.object({
     email: yup
@@ -20,18 +22,33 @@ const validationSchema = yup.object({
         .required('Password is required'),
 });
 
-
 const Login = () => {
+    const navigate = useNavigate();
+    const { login: storeUser } = useAuth(); 
+    
+    const [login, { isLoading }] = useLoginMutation();
     const formik = useFormik({
         initialValues: {
             email: '',
             password: '',
         },
         validationSchema,
-        onSubmit: values => {
-            console.log(values);
+        onSubmit: async (values:any) => {
+            values.hashedPassword = values.password;
+            delete values.password;
+            // console.log(values);
+            try {
+                const response = await login(values).unwrap();
+                const token = response.result.accessToken
+                storeUser(token)
+                navigate('/')
+            } catch (error) {
+                console.log(error);
+            }
         },
     });
+
+
 
     return (
         <Container component="main" maxWidth="sm" sx={{

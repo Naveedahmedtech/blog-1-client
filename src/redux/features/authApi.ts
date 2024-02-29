@@ -10,8 +10,15 @@ export const authApi = createApi({
         body,
       }),
     }),
+    login: builder.mutation({
+      query: (body) => ({
+        url: "/login",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
 // Directly export the generated hook
-export const { useRegisterMutation } = authApi as any;
+export const { useRegisterMutation, useLoginMutation } = authApi as any;
