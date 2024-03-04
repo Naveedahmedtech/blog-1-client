@@ -4,8 +4,8 @@ import { router } from './router/routes';
 import { useAuth } from './hooks/useAuth';
 
 function App() {
-  const { userData } = useAuth();
-  console.log(userData)
+  const { isLoggedIn } = useAuth();
+  console.log(isLoggedIn)
   return (
     <>
       <RouterProvider router={router}></RouterProvider>
