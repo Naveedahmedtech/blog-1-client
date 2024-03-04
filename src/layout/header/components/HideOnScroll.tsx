@@ -1,12 +1,18 @@
 // components/HideOnScroll.js
 import { useScrollTrigger, Slide } from '@mui/material';
+import React from 'react';
 
-const HideOnScroll = ({ children, window }:any) => {
+
+interface Props {
+    children: React.ReactNode;
+    window: any;
+}
+const HideOnScroll = ({ children, window }: Props) => {
     const trigger = useScrollTrigger({ target: window ? window() : undefined });
 
     return (
         <Slide appear={false} direction="down" in={!trigger}>
-            {children}
+            {children as React.ReactElement}
         </Slide>
     );
 };

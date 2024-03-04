@@ -22,7 +22,7 @@ const HideAppBar = () => {
   return (
     <>
       <CssBaseline />
-      <HideOnScroll>
+      <HideOnScroll window={window}>
         <AppBar >
           <Toolbar sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", background: "#000" }}>
             <Logo />
