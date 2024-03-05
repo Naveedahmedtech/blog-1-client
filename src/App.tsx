@@ -1,13 +1,16 @@
+import { RouterProvider} from 'react-router-dom';
 import './App.css'
-import { Header } from './layout'
+import { router } from './router/routes';
+import { useAuth } from './hooks/useAuth';
 
 function App() {
-
+  const { isLoggedIn } = useAuth();
+  console.log(isLoggedIn)
   return (
     <>
-      <Header />
+      <RouterProvider router={router}></RouterProvider>
     </>
   )
-}
+} 
 
 export default App
