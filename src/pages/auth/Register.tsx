@@ -25,7 +25,7 @@ const validationSchema = yup.object({
 
 const Register = () => {
     const navigate = useNavigate();
-    const [register, { isLoading }] = useRegisterMutation();
+    const [register] = useRegisterMutation();
     const formik = useFormik({
         initialValues: {
             username: '',
