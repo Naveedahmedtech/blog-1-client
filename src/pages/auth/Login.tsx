@@ -26,7 +26,7 @@ const Login = () => {
     const navigate = useNavigate();
     const { login: storeUser } = useAuth(); 
     
-    const [login, { isLoading }] = useLoginMutation();
+    const [login] = useLoginMutation();
     const formik = useFormik({
         initialValues: {
             email: '',
