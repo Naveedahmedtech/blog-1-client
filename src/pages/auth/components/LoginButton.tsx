@@ -1,10 +1,13 @@
-import { Button } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 
-const ActionButton = ({ actionText } : any) => {
+const ActionButton = ({ actionText, isLoading }: any) => {
     return (
-        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            {actionText}
-        </Button>
+        <button
+            type="submit"
+            className='custom-btn btn'
+        >
+            {isLoading ? <CircularProgress size={24} /> : actionText}
+        </button>
     );
 };
 

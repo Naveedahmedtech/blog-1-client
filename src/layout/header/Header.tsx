@@ -19,10 +19,12 @@ const HideAppBar = () => {
     setMobileMenuOpen(open);
   };
 
+
+
   return (
     <>
       <CssBaseline />
-      <HideOnScroll window={window}>
+      <HideOnScroll>
         <AppBar >
           <Toolbar sx={{ display: 'flex', justifyContent: "space-between", alignItems: "center", background: "#000" }}>
             <Logo />
@@ -60,7 +62,7 @@ const HideAppBar = () => {
       >
         <Box
           role="presentation"
-          // onClick={toggleDrawer(false)}
+        // onClick={toggleDrawer(false)}
         // onKeyDown={toggleDrawer(false)}
         >
           <Navigation is_mobile={true} setMobileMenuOpen={setMobileMenuOpen} />

@@ -25,7 +25,7 @@ const validationSchema = yup.object({
 
 const Register = () => {
     const navigate = useNavigate();
-    const [register] = useRegisterMutation();
+    const [register, { isLoading }] = useRegisterMutation();
     const formik = useFormik({
         initialValues: {
             username: '',
@@ -82,7 +82,7 @@ const Register = () => {
                         <FormInputField name="username" label="User Name" type="text" icon={<AccountCircle />} formik={formik} />
                         <FormInputField name="email" label="Email Address" type="email" icon={<EmailIcon />} formik={formik} />
                         <FormInputField name="password" label="Password" type="password" icon={<LockIcon />} formik={formik} />
-                        <ActionButton actionText="Register" />
+                        <ActionButton actionText="Register" isLoading={isLoading} />
                         {/* <ForgotPasswordLink /> */}
                     </form>
                 </CardContent>

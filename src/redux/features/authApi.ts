@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { BASE_URL } from "../../../baseUrl";
 
 export const authApi = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://blog-1-server-7d4o.vercel.app/api/auth",
+    baseUrl: `${BASE_URL}/auth`,
   }),
   endpoints: (builder) => ({
     register: builder.mutation({
@@ -18,7 +19,7 @@ export const authApi = createApi({
         method: "POST",
         body,
       }),
-    }), 
+    }),
   }),
 });
 

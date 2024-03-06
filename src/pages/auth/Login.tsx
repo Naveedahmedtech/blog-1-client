@@ -24,16 +24,16 @@ const validationSchema = yup.object({
 
 const Login = () => {
     const navigate = useNavigate();
-    const { login: storeUser } = useAuth(); 
-    
-    const [login] = useLoginMutation();
+    const { login: storeUser } = useAuth();
+
+    const [login, { isLoading }] = useLoginMutation();
     const formik = useFormik({
         initialValues: {
             email: '',
             password: '',
         },
         validationSchema,
-        onSubmit: async (values:any) => {
+        onSubmit: async (values: any) => {
             values.hashedPassword = values.password;
             delete values.password;
             // console.log(values);
@@ -82,11 +82,11 @@ const Login = () => {
                     <form onSubmit={formik.handleSubmit} style={{ width: '100%' }} noValidate>
                         <FormInputField name="email" label="Email Address" type="email" icon={<EmailIcon />} formik={formik} />
                         <FormInputField name="password" label="Password" type="password" icon={<LockIcon />} formik={formik} />
-                        <ActionButton actionText="Sign in" />
+                        <ActionButton actionText="Sign in" isLoading={isLoading} />
                         <ForgotPasswordLink />
-                        <>
-                        <Link to="/register">Sign up</Link>
-                        </>
+                        <div className=''>
+                            <Link to="/register" className=''>Sign up</Link>
+                        </div>
                     </form>
                 </CardContent>
             </Card>
