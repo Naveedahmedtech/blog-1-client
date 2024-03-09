@@ -1,8 +1,11 @@
 import React from 'react'
+import LatestPosts from './components/LatestPosts'
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <>
+      <LatestPosts />
+    </>
   )
 }
 

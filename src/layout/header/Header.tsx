@@ -6,6 +6,7 @@ import Navigation from './components/Navigation';
 import ProfileMenu from './components/ProfileMenu';
 import Logo from './components/Logo';
 import HideOnScroll from './components/HideOnScroll';
+import { Outlet } from 'react-router-dom';
 
 const HideAppBar = () => {
   const theme = useTheme();
@@ -69,7 +70,7 @@ const HideAppBar = () => {
         </Box>
       </Drawer>
 
-
+      <Outlet />
     </>
   );
 };

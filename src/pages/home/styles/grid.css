@@ -1,0 +1,32 @@
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 2em;
+}
+
+.flex-grow {
+    flex-grow: 1;
+}
+
+.flex-container-col {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    min-width: 28em;
+    gap: 2em;
+}
+
+
+@media screen and (max-width: 768px) {
+    .flex-container {
+        flex-wrap: wrap;
+    }
+
+    .flex-container-col {
+        justify-content: space-between;
+        flex-direction: row;
+        width: 100%;
+        min-width: 1em;
+    }
+
+}
