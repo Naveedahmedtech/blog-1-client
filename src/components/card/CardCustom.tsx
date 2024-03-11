@@ -3,25 +3,27 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { CardActionArea } from '@mui/material';
+import { Badge, CardActionArea, Chip } from '@mui/material';
+import TextComponent from '../text/TextComponent';
+import { truncatedDescription } from '../../utlis/text.utils';
+import './cardCustom.css';
 
 interface CardCustomProps {
     image: string;
     title: string;
     description: string;
     height: string;
+    author: string;
+    tags?: string[];
+    category: string;
 }
 
-const MAX_DESCRIPTION_LENGTH = 100; // Define a maximum length for the description
-
-const CardCustom: React.FC<CardCustomProps> = ({ image, title, description, height }) => {
-    // Truncate long descriptions
-    const truncatedDescription = description.length > MAX_DESCRIPTION_LENGTH
-        ? `${description.substring(0, MAX_DESCRIPTION_LENGTH)}...`
-        : description;
+const CardCustom: React.FC<CardCustomProps> = ({ image, title, description, height, author, tags, category }) => {
 
     return (
-        <Card style={{ height: "100%" }}>
+        <Card className="custom-card"
+            style={{ height: "100%" }}
+        >
             <CardActionArea>
                 <CardMedia
                     component="img"
@@ -30,12 +32,23 @@ const CardCustom: React.FC<CardCustomProps> = ({ image, title, description, heig
                     alt="Image"
                 />
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
+                    {tags && tags.length > 0 && (
+                        <div>
+                            {tags.map((tag, index) => (
+                                <Typography key={index} variant="body2" color="text.secondary" component="span">
+                                    {tag} {' '}
+                                </Typography>
+                            ))}
+                        </div>
+                    )}
+                    <Chip label={category} size="small" sx={{ my: 1 }} />
+                    <TextComponent sx={{ my: 1 }}>{author}</TextComponent>
+                    <TextComponent gutterBottom variant="h5" component="div">
                         {title}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        {truncatedDescription}
-                    </Typography>
+                    </TextComponent>
+                    <TextComponent variant="body2" color="text.secondary">
+                        {truncatedDescription(description)}
+                    </TextComponent>
                 </CardContent>
             </CardActionArea>
         </Card>
