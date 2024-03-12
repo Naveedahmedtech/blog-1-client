@@ -1,39 +1,36 @@
 import { NavLink } from 'react-router-dom';
-import '../styles/navigation.css'; // Make sure the path is correct
-// import { RootState } from '../../../redux/store'; // Ensure correct path
+import '../styles/navigation.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleDropdown } from '../../../redux/features/dropdownSlice'; // Ensure correct path
+import { toggleDropdown } from '../../../redux/features/dropdownSlice';
 import navigationLinks from '../../../utlis/navigationLinks';
 import { useRef } from 'react';
 import useOutsideClick from '../../../hooks/useOutsideClick';
+import { useGetAllCategoriesQuery } from '../../../redux/features/postsApi';
 
-
-const Navigation = ({ is_mobile, setMobileMenuOpen } :any ) => {
+const Navigation = ({ is_mobile, setMobileMenuOpen }: any) => {
     const dispatch = useDispatch();
-    const openDropdownIndex = useSelector((state: any) => state.dropdown.openDropdownIndex);
-    const handleToggleDropdown = (index: number) => {
+    const openDropdownIndex = useSelector((state:any) => state.dropdown.openDropdownIndex);
+    const { data, isLoading, isError, error } = useGetAllCategoriesQuery({});
+    const categories = data?.data;
+
+    const handleToggleDropdown = (index:any) => {
         dispatch(toggleDropdown(index));
     };
 
-    
-
-    const dropdownRef = useRef(null); 
+    const dropdownRef = useRef(null);
 
     useOutsideClick(dropdownRef, () => {
         if (openDropdownIndex !== null) {
-            dispatch(toggleDropdown(null)); 
+            dispatch(toggleDropdown(null));
         }
     });
 
-    // Example function in parent component
     const handleCloseDrawer = () => {
-        setMobileMenuOpen(false); 
+        setMobileMenuOpen(false);
     };
 
-
-
     return (
-        <nav className={`nav ${is_mobile ? "nav-mobile" : "nav" }`}>
+        <nav className={`nav ${is_mobile ? "nav-mobile" : "nav"}`}>
             {navigationLinks.map((link, index) => {
                 if (link.type === 'link') {
                     return (
@@ -45,16 +42,16 @@ const Navigation = ({ is_mobile, setMobileMenuOpen } :any ) => {
                             {link.label}
                         </NavLink>
                     );
-                } else if (link.type === 'dropdown') {
+                } else if (link.type === 'dropdown' && link.label === 'Categories') {
                     return (
                         <div key={index} className="dropdown-container" ref={dropdownRef}>
                             <span onClick={() => handleToggleDropdown(index)} className="dropdown-label">
                                 {link.label}
                             </span>
                             <div className={`dropdown-menu ${openDropdownIndex === index ? 'show' : ''}`}>
-                                {link.items.map((dropdownLink, dropdownIndex) => (
-                                    <NavLink key={dropdownIndex} to={dropdownLink.to} className="nav-link">
-                                        {dropdownLink.label}
+                                {categories && categories.map((category, dropdownIndex) => (
+                                    <NavLink key={dropdownIndex} to={`/category/${category.id}`} className="nav-link">
+                                        {category.name}
                                     </NavLink>
                                 ))}
                             </div>

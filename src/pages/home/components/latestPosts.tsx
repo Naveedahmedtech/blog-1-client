@@ -9,17 +9,17 @@ import LinkComponent from '../../../components/text/LinkComponent';
 const hd = 'lorem ipsum dolor sit amet, consectetur adip e fits entirely within the boundaries of the screen and is therefore    completely transparent to the user '
 
 const dummyApiResponse = [
-  { id: 1, image: blog1, title: "some-title", description: hd, author: "some-author", tags: [ "#latest", "#entertainment"], category: "some-category" },
+  { id: 1, image: blog1, title: "some-title", description: hd, author: "some-author", tags: ["#latest", "#entertainment"], category: "some-category" },
   { id: 2, image: blog2, title: "some-title", description: "some description", author: "some-author", tags: ["#latest", "#entertainment"], category: "some-category" },
   { id: 3, image: blog3, title: "some-title", description: "some description", author: "some-author", tags: ["#latest", "#entertainment"], category: "some-category" },
 ];
 
-const LatestPosts = () => {
+const LatestPosts = ({ posts }: any) => {
   return (
     <Box sx={{ my: 4 }}>
       <TextComponent gutterBottom variant="h4">Latest Posts</TextComponent>
       {
-        dummyApiResponse?.map((post) => (
+        posts?.data?.map((post:any) => (
           <Box className='flex-container' key={post?.id} my={5}>
             <LinkComponent className='flex-grow' to={`/posts/${post?.id}`}>
               <CardCustom
@@ -28,9 +28,9 @@ const LatestPosts = () => {
                 title={post?.title}
                 description={post?.description}
                 height='350'
-                author={post?.author}
+                author={post?.author?.username}
                 tags={post?.tags}
-                category={post?.category}
+                category={post?.category?.name}
               />
             </LinkComponent>
           </Box>

@@ -27,7 +27,7 @@ const TrendingPosts = () => {
                         description={dummyApiResponse[0].description}
                         height='350'
                         author={dummyApiResponse[0].author}
-                        tags={dummyApiResponse[0].tags}
+                        // tags={dummyApiResponse[0].tags}
                         category={dummyApiResponse[0].category}
                     />
                 </LinkComponent>
@@ -40,7 +40,7 @@ const TrendingPosts = () => {
                             description={dummyApiResponse[1].description}
                             height='140'
                             author={dummyApiResponse[1].author}
-                            tags={dummyApiResponse[1].tags}
+                            // tags={dummyApiResponse[1].tags}
                             category={dummyApiResponse[1].category}
 
                         />
@@ -53,7 +53,7 @@ const TrendingPosts = () => {
                             description={dummyApiResponse[2].description}
                             height='140'
                             author={dummyApiResponse[2].author}
-                            tags={dummyApiResponse[2].tags}
+                            // tags={dummyApiResponse[2].tags}
                             category={dummyApiResponse[2].category}
 
                         />

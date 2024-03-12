@@ -3,10 +3,25 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Badge, CardActionArea, Chip } from '@mui/material';
+import { CardActionArea, Chip } from '@mui/material';
 import TextComponent from '../text/TextComponent';
 import { truncatedDescription } from '../../utlis/text.utils';
 import './cardCustom.css';
+
+
+interface Tag {
+    id: string;
+    name: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
+interface Tags {
+    id: string;
+    postId: string;
+    tagId: string;
+    tag: Tag;
+}
 
 interface CardCustomProps {
     image: string;
@@ -14,7 +29,7 @@ interface CardCustomProps {
     description: string;
     height: string;
     author: string;
-    tags?: string[];
+    tags?: Tags[];
     category: string;
 }
 
@@ -34,9 +49,9 @@ const CardCustom: React.FC<CardCustomProps> = ({ image, title, description, heig
                 <CardContent>
                     {tags && tags.length > 0 && (
                         <div>
-                            {tags.map((tag, index) => (
+                            {tags.map((tagObject, index) => (
                                 <Typography key={index} variant="body2" color="text.secondary" component="span">
-                                    {tag} {' '}
+                                    {tagObject?.tag?.name} {' '}
                                 </Typography>
                             ))}
                         </div>
