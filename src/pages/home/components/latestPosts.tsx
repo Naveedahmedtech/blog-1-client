@@ -1,18 +1,8 @@
 import CardCustom from '../../../components/card/CardCustom';
 import "../styles/grid.css"
-import blog1 from '../../../assets/images/home/blog1.jpg'
-import blog2 from '../../../assets/images/home/blog2.jpg'
-import blog3 from '../../../assets/images/home/blog3.jpg'
 import TextComponent from '../../../components/text/TextComponent';
 import { Box } from '@mui/material';
 import LinkComponent from '../../../components/text/LinkComponent';
-const hd = 'lorem ipsum dolor sit amet, consectetur adip e fits entirely within the boundaries of the screen and is therefore    completely transparent to the user '
-
-const dummyApiResponse = [
-  { id: 1, image: blog1, title: "some-title", description: hd, author: "some-author", tags: ["#latest", "#entertainment"], category: "some-category" },
-  { id: 2, image: blog2, title: "some-title", description: "some description", author: "some-author", tags: ["#latest", "#entertainment"], category: "some-category" },
-  { id: 3, image: blog3, title: "some-title", description: "some description", author: "some-author", tags: ["#latest", "#entertainment"], category: "some-category" },
-];
 
 const LatestPosts = ({ posts }: any) => {
   return (

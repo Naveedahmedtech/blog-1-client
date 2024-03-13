@@ -50,7 +50,7 @@ const Navigation = ({ is_mobile, setMobileMenuOpen }: any) => {
                             </span>
                             <div className={`dropdown-menu ${openDropdownIndex === index ? 'show' : ''}`}>
                                 {categories && categories.map((category, dropdownIndex) => (
-                                    <NavLink key={dropdownIndex} to={`/category/${category.id}`} className="nav-link">
+                                    <NavLink key={dropdownIndex} to={`/category/${category.id}?category_name=${category.name}`} className="nav-link">
                                         {category.name}
                                     </NavLink>
                                 ))}

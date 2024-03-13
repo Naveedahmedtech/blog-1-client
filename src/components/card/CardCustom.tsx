@@ -31,9 +31,10 @@ interface CardCustomProps {
     author: string;
     tags?: Tags[];
     category: string;
+    page?: string;
 }
 
-const CardCustom: React.FC<CardCustomProps> = ({ image, title, description, height, author, tags, category }) => {
+const CardCustom: React.FC<CardCustomProps> = ({ image, title, description, height, author, tags, category, page }) => {
 
     return (
         <Card className="custom-card"
@@ -62,7 +63,7 @@ const CardCustom: React.FC<CardCustomProps> = ({ image, title, description, heig
                         {title}
                     </TextComponent>
                     <TextComponent variant="body2" color="text.secondary">
-                        {truncatedDescription(description)}
+                        {page === "detail" ? description : truncatedDescription(description)}
                     </TextComponent>
                 </CardContent>
             </CardActionArea>

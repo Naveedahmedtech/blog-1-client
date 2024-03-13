@@ -28,7 +28,12 @@ export const postsApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
   }),
-  tagTypes: ["getAllPosts", "getAllCategories", "getAllPostsByCategories"], // Use a more generic tag if you plan to expand endpoint types
+  tagTypes: [
+    "getAllPosts",
+    "getAllCategories",
+    "getAllPostsByCategories",
+    "getPostById",
+  ], // Use a more generic tag if you plan to expand endpoint types
   endpoints: (builder) => ({
     getAllPosts: builder.query<Post[], void | Record<string, unknown>>({
       query: () => ({
@@ -44,6 +49,13 @@ export const postsApi = createApi({
       }),
       providesTags: ["getAllCategories"],
     }),
+    getPostById: builder.query({
+      query: ({ post_id }) => ({
+        url: `/posts/get/${post_id}`,
+        method: "Get",
+      }),
+      providesTags: ["getPostById"],
+    }),
     getAllPostsByCategories: builder.query({
       query: ({ category_id }) => ({
         url: `/posts/get-by-category/${category_id}`,
@@ -54,4 +66,4 @@ export const postsApi = createApi({
   }),
 });
 
-export const { useGetAllPostsQuery, useGetAllCategoriesQuery, useGetAllPostsByCategoriesQuery } = postsApi;
+export const { useGetAllPostsQuery, useGetAllCategoriesQuery, useGetAllPostsByCategoriesQuery, useGetPostByIdQuery } = postsApi;
