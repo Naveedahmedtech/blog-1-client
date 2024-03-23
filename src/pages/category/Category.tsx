@@ -26,16 +26,16 @@ const Category = () => {
       {
         posts?.data?.map((post: any) => (
           <Box className='flex-container' key={post?.id} my={5}>
-            <LinkComponent className='flex-grow' to={`/posts/${post?.id}`}>
+            <LinkComponent className='flex-grow' to={`/posts/${post?._id}`}>
               <CardCustom
-                key={post?.id}
+                key={post?._id}
                 image={post?.image}
                 title={post?.title}
                 description={post?.description}
                 height='350'
-                author={post?.author?.username}
+                author={post?.authorId?.username}
                 tags={post?.tags}
-                category={post?.category?.name}
+                category={post?.categoryId?.name}
               />
             </LinkComponent>
           </Box>

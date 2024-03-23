@@ -19,7 +19,7 @@ const Posts = () => {
                 height='350'
                 author={post?.data?.author?.username}
                 tags={post?.data?.tags}
-                category={post?.data?.category?.name}
+                category={post?.data?.categoryId?.name}
                 page="detail"
             />
         </>

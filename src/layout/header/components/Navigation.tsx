@@ -2,18 +2,18 @@ import { NavLink } from 'react-router-dom';
 import '../styles/navigation.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleDropdown } from '../../../redux/features/dropdownSlice';
-import navigationLinks from '../../../utlis/navigationLinks';
+import navigationLinks from '../../../utils/navigationLinks';
 import { useRef } from 'react';
 import useOutsideClick from '../../../hooks/useOutsideClick';
 import { useGetAllCategoriesQuery } from '../../../redux/features/postsApi';
 
 const Navigation = ({ is_mobile, setMobileMenuOpen }: any) => {
     const dispatch = useDispatch();
-    const openDropdownIndex = useSelector((state:any) => state.dropdown.openDropdownIndex);
+    const openDropdownIndex = useSelector((state: any) => state.dropdown.openDropdownIndex);
     const { data, isLoading, isError, error } = useGetAllCategoriesQuery({});
     const categories = data?.data;
 
-    const handleToggleDropdown = (index:any) => {
+    const handleToggleDropdown = (index: any) => {
         dispatch(toggleDropdown(index));
     };
 
@@ -50,7 +50,7 @@ const Navigation = ({ is_mobile, setMobileMenuOpen }: any) => {
                             </span>
                             <div className={`dropdown-menu ${openDropdownIndex === index ? 'show' : ''}`}>
                                 {categories && categories.map((category, dropdownIndex) => (
-                                    <NavLink key={dropdownIndex} to={`/category/${category.id}?category_name=${category.name}`} className="nav-link">
+                                    <NavLink key={dropdownIndex} to={`/category/${category._id}?category_name=${category.name}`} className="nav-link">
                                         {category.name}
                                     </NavLink>
                                 ))}

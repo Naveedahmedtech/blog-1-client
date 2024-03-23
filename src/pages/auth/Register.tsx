@@ -40,7 +40,7 @@ const Register = () => {
             try {
                 const response = await register(values).unwrap();
                 navigate('/login')
-                console.log(response);
+                // console.log(response);
 
             } catch (error) {
                 console.log(error);

@@ -13,10 +13,10 @@ interface Post {
 }
 
 interface Categories {
-    id: string;
-    name: string;
-    createdAt: string;
-    updatedAt: string;
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface CategoryP {
@@ -33,6 +33,9 @@ export const postsApi = createApi({
     "getAllCategories",
     "getAllPostsByCategories",
     "getPostById",
+    "getAllTags",
+    "addPost",
+    "getAllPostsByAuthor",
   ], // Use a more generic tag if you plan to expand endpoint types
   endpoints: (builder) => ({
     getAllPosts: builder.query<Post[], void | Record<string, unknown>>({
@@ -49,6 +52,13 @@ export const postsApi = createApi({
       }),
       providesTags: ["getAllCategories"],
     }),
+    getAllTags: builder.query<CategoryP, void | Record<string, unknown>>({
+      query: () => ({
+        url: "/tags/get-all",
+        method: "Get",
+      }),
+      providesTags: ["getAllTags"],
+    }),
     getPostById: builder.query({
       query: ({ post_id }) => ({
         url: `/posts/get/${post_id}`,
@@ -63,7 +73,30 @@ export const postsApi = createApi({
       }),
       providesTags: ["getAllPostsByCategories"],
     }),
+    getAllPostsByAuthor: builder.query({
+      query: ({ author_id }) => ({
+        url: `/posts/get-by-author/${author_id}`,
+        method: "Get",
+      }),
+      providesTags: ["getAllPostsByAuthor"],
+    }),
+    addPost: builder.mutation({
+      query: (body) => ({
+        url: `/posts/add`,
+        method: "POST",
+        body: body,
+      }),
+      invalidatesTags: ["addPost"],
+    }),
   }),
 });
 
-export const { useGetAllPostsQuery, useGetAllCategoriesQuery, useGetAllPostsByCategoriesQuery, useGetPostByIdQuery } = postsApi;
+export const {
+  useGetAllPostsQuery,
+  useGetAllCategoriesQuery,
+  useGetAllPostsByCategoriesQuery,
+  useGetPostByIdQuery,
+  useGetAllTagsQuery,
+  useAddPostMutation,
+  useGetAllPostsByAuthorQuery,
+} = postsApi;

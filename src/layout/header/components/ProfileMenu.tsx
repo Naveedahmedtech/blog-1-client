@@ -42,7 +42,8 @@ const ProfileMenu = () => {
                 onClose={handleMenuClose}
             >
                 <ProfileMenuItem icon={<Profile fontSize="small" />} text="Profile" path="/profile" />
-                <ProfileMenuItem icon={<Profile fontSize="small" />} text="Add Post" path="/add-post" />
+                <ProfileMenuItem icon={<Profile fontSize="small" />} text="Add Blogs" path="/add-blogs" />
+                <ProfileMenuItem icon={<Profile fontSize="small" />} text="My Blogs" path="/my-blogs" />
                 <ProfileMenuItem icon={<Logout fontSize="small" />} text="Logout" path="/logout" />
             </Menu>
         </>

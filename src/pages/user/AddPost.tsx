@@ -1,131 +1,219 @@
-import React, { useState, useEffect } from 'react';
-import { TextField, Button, Select, MenuItem, InputLabel, FormControl, OutlinedInput, Chip } from '@mui/material';
+import React, { useState,  ChangeEvent, FormEvent, ReactNode } from 'react';
+import {
+    Card,
+    TextField,
+    Button,
+    Select,
+    MenuItem,
+    InputLabel,
+    FormControl,
+    OutlinedInput,
+    Chip,
+    CircularProgress,
+    Snackbar,
+    SelectChangeEvent,
+} from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useAddPostMutation, useGetAllCategoriesQuery, useGetAllTagsQuery } from '../../redux/features/postsApi';
+import { useAuth } from '../../hooks/useAuth';
+import { decodeToken } from '../../utils/tokens';
 
-const AddPost = () => {
-    const [categories, setCategories] = useState([]);
-    const [tags, setTags] = useState([]);
-    const [formData, setFormData] = useState({
-        title: '',
-        description: '',
-        category: '',
-        tags: [],
-        image: null,
-    });
+interface FormData {
+    title: string;
+    description: string;
+    category: string;
+    tagIds: string[];
+    image: File | null;
+    imagePreviewUrl: string | null;
+}
 
-    // Fetch categories and tags from your API
-    useEffect(() => {
-        // Placeholder functions to fetch categories and tags
-        const fetchCategories = async () => {
-            // Your API call here
-            setCategories(['Category 1', 'Category 2']); // Example categories
-        };
 
-        const fetchTags = async () => {
-            // Your API call here
-            setTags(['Tag 1', 'Tag 2', 'Tag 3']); // Example tags
-        };
+const initialFormData = {
+    title: '',
+    description: '',
+    category: '',
+    tagIds: [],
+    image: null,
+    imagePreviewUrl: null,
+};
+const AddPost: React.FC = () => {
+    const [formData, setFormData] = useState<FormData>(initialFormData);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
 
-        fetchCategories();
-        fetchTags();
-    }, []);
+    const { data: categories, isLoading: categoryLoading } = useGetAllCategoriesQuery();
+    const { data: tags, isLoading: tagsLoading } = useGetAllTagsQuery();
+    const [addPost, { isLoading: postLoading }] = useAddPostMutation();
 
-    // Handle change for most inputs
-    const handleChange = (e) => {
+    const { userData } = useAuth();
+    const user = decodeToken(userData) as any;
+    const userId = user?.sub;
+
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.down('sm'));
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | { target: { name: string; value: unknown; }; }) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    // Handle change for tags (multi-select)
-    const handleTagsChange = (event) => {
-        const {
-            target: { value },
-        } = event;
-        setFormData((prev) => ({ ...prev, tags: typeof value === 'string' ? value.split(',') : value, }));
+    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files ? e.target.files[0] : null;
+        setFormData((prev) => ({
+            ...prev,
+            image: file,
+            imagePreviewUrl: file ? URL.createObjectURL(file) : null,
+        }));
     };
 
-    // Handle form submission
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // Process your formData here
-        console.log(formData);
+        const createdFormData = new FormData();
+        createdFormData.append('title', formData.title);
+        createdFormData.append('description', formData.description);
+        createdFormData.append('categoryId', formData.category);
+        if (formData.image) createdFormData.append('image', formData.image);
+        createdFormData.append('authorId', userId || '');
+
+        if (formData.tagIds && Array.isArray(formData.tagIds)) {
+            createdFormData.append('tagIds', JSON.stringify(formData.tagIds));
+        } else {
+            console.error('tagIds must be an array');
+            return;
+        }
+
+        try {
+            const response = await addPost(createdFormData).unwrap();
+            console.log("Add Post API response: ", response);
+            setOpenSnackbar(true);
+            setFormData(initialFormData);
+        } catch (error) {
+            console.error("Add Post Error", error);
+        }
     };
+
+    const handleTagsChange = (
+        event: SelectChangeEvent<string[]>, // Simplified type for clarity
+    ) => {
+        const value = event.target.value;
+        setFormData(prev => ({
+            ...prev,
+            tagIds: typeof value === 'string' ? [value] : value as string[], // Cast to string array
+        }));
+    };
+
 
     return (
-        <form onSubmit={handleSubmit}>
-            <TextField
-                label="Title"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-            />
-            <TextField
-                label="Description"
-                variant="outlined"
-                fullWidth
-                margin="normal"
-                name="description"
-                multiline
-                rows={4}
-                value={formData.description}
-                onChange={handleChange}
-            />
-            <FormControl fullWidth margin="normal">
-                <InputLabel>Category</InputLabel>
-                <Select
-                    value={formData.category}
+        <Card sx={{ p: 2 }}>
+            <form onSubmit={handleSubmit}>
+                <TextField
+                    label="Title"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    name="title"
+                    value={formData.title}
                     onChange={handleChange}
-                    name="category"
-                    label="Category"
-                >
-                    {categories.map((category) => (
-                        <MenuItem key={category} value={category}>
-                            {category}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-            <FormControl fullWidth margin="normal">
-                <InputLabel>Tags</InputLabel>
-                <Select
-                    multiple
-                    value={formData.tags}
-                    onChange={handleTagsChange}
-                    input={<OutlinedInput label="Tags" />}
-                    renderValue={(selected) => (
-                        <div>
-                            {selected.map((value) => (
-                                <Chip key={value} label={value} />
-                            ))}
-                        </div>
-                    )}
-                >
-                    {tags.map((tag) => (
-                        <MenuItem key={tag} value={tag}>
-                            {tag}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-            <Button
-                variant="contained"
-                component="label"
-                fullWidth
-                margin="normal"
-            >
-                Upload Image
-                <input
-                    type="file"
-                    hidden
-                    onChange={(e) => setFormData((prev) => ({ ...prev, image: e.target.files[0] }))}
                 />
-            </Button>
-            <Button type="submit" variant="contained" color="primary" fullWidth>
-                Submit
-            </Button>
-        </form>
+                <TextField
+                    label="Description"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    name="description"
+                    multiline
+                    rows={4}
+                    value={formData.description}
+                    onChange={handleChange}
+                />
+                {categoryLoading ? (
+                    <CircularProgress />
+                ) : (
+                    <FormControl fullWidth margin="normal">
+                        <InputLabel>Category</InputLabel>
+                        <Select
+                            value={formData.category}
+                            onChange={handleChange}
+                            name="category"
+                            label="Category"
+                        >
+                            {categories?.data.map((category:any) => (
+                                <MenuItem key={category?._id} value={category?._id}>
+                                    {category?.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                )}
+                {tagsLoading ? (
+                    <CircularProgress />
+                ) : (
+                    <FormControl fullWidth margin="normal">
+                        <InputLabel>Tags</InputLabel>
+                        <Select
+                            multiple
+                            value={formData.tagIds}
+                            onChange={handleTagsChange}
+                            input={<OutlinedInput label="Tags" />}
+                            renderValue={(selected) => (
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                    {selected.map((selectedTagId:any) => {
+                                        const tagObj = tags?.data.find((tag:any) => tag._id === selectedTagId);
+                                        return (
+                                            <Chip
+                                                key={selectedTagId}
+                                                label={tagObj ? tagObj.name : ''}
+                                                sx={{ m: 0.5, color: 'white', backgroundColor: 'primary.main' }}
+                                            />
+                                        );
+                                    })}
+                                </div>
+                            )}
+                        >
+                            {tags?.data.map((tag:any) => (
+                                <MenuItem key={tag._id} value={tag._id}>
+                                    {tag.name}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                )}
+
+                <Button
+                    variant="contained"
+                    component="label"
+                    fullWidth
+                    sx={{ mt: 2, mb: 2 }}
+                >
+                    Upload Image
+                    <input
+                        type="file"
+                        hidden
+                        onChange={handleImageChange}
+                    />
+                </Button>
+                {formData.imagePreviewUrl && (
+                    <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+                        <img
+                            src={formData.imagePreviewUrl}
+                            alt="Selected"
+                            style={{ maxWidth: '100%', maxHeight: '300px', height: 'auto' }}
+                        />
+                    </div>
+                )}
+
+                <Button type="submit" variant="contained" color="primary" fullWidth disabled={postLoading}>
+                    {postLoading ? 'Submitting...' : 'Submit'}
+                </Button>
+            </form>
+
+            <Snackbar
+                open={openSnackbar}
+                autoHideDuration={6000}
+                onClose={() => setOpenSnackbar(false)}
+                message="Post added successfully"
+            />
+        </Card>
     );
 };
 

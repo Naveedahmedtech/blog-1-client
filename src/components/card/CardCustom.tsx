@@ -5,8 +5,9 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea, Chip } from '@mui/material';
 import TextComponent from '../text/TextComponent';
-import { truncatedDescription } from '../../utlis/text.utils';
+import { truncatedDescription } from '../../utils/text.utils';
 import './cardCustom.css';
+import { BASE_URL } from '../../../baseUrl';
 
 
 interface Tag {
@@ -16,12 +17,12 @@ interface Tag {
     updatedAt: string;
 }
 
-interface Tags {
-    id: string;
-    postId: string;
-    tagId: string;
-    tag: Tag;
-}
+// interface Tags {
+//     id: string;
+//     postId: string;
+//     tagId: string;
+//     tag: Tag;
+// }
 
 interface CardCustomProps {
     image: string;
@@ -29,7 +30,7 @@ interface CardCustomProps {
     description: string;
     height: string;
     author: string;
-    tags?: Tags[];
+    tags?: Tag[];
     category: string;
     page?: string;
 }
@@ -44,15 +45,15 @@ const CardCustom: React.FC<CardCustomProps> = ({ image, title, description, heig
                 <CardMedia
                     component="img"
                     height={height}
-                    image={image}
+                    image={`${BASE_URL}/uploads/${image}`}
                     alt="Image"
                 />
                 <CardContent>
                     {tags && tags.length > 0 && (
                         <div>
-                            {tags.map((tagObject, index) => (
+                            {tags?.map((tagObject, index) => (
                                 <Typography key={index} variant="body2" color="text.secondary" component="span">
-                                    {tagObject?.tag?.name} {' '}
+                                    {tagObject?.name} {' '}
                                 </Typography>
                             ))}
                         </div>
