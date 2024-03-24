@@ -21,8 +21,26 @@ export const authApi = createApi({
         body,
       }),
     }),
+    changePassword: builder.mutation({
+      query: (body) => ({
+        url: "/change-password",
+        method: "PATCH",
+        body,
+      }),
+    }),
+    updateUsername: builder.mutation({
+      query: (body) => ({
+        url: "/users/update-username",
+        method: "PATCH",
+        body,
+      }),
+    }),
   }),
 });
 
-// Directly export the generated hook
-export const { useRegisterMutation, useLoginMutation } = authApi as any;
+export const {
+  useRegisterMutation,
+  useLoginMutation,
+  useUpdateUsernameMutation,
+  useChangePasswordMutation,
+} = authApi as any;

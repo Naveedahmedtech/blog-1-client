@@ -32,7 +32,7 @@ const HideAppBar = () => {
             {!isMobile && (
               <>
                 <Navigation is_mobile={false} setMobileMenuOpen={setMobileMenuOpen} />
-                <ProfileMenu />
+              
               </>
             )}
             {isMobile && (
@@ -49,7 +49,7 @@ const HideAppBar = () => {
         </AppBar>
       </HideOnScroll>
       <Toolbar />
-      <Drawer
+      {/* <Drawer
         anchor="right"
         open={mobileMenuOpen}
         onClose={toggleDrawer(false)}
@@ -68,6 +68,24 @@ const HideAppBar = () => {
         >
           <Navigation is_mobile={true} setMobileMenuOpen={setMobileMenuOpen} />
         </Box>
+      </Drawer> */}
+      <Drawer
+        anchor="right"
+        open={mobileMenuOpen}
+        onClose={toggleDrawer(false)}
+        PaperProps={{
+          sx: {
+            backgroundColor: '#000',
+            color: '#fff',
+            width: 250,
+            transition: 'width 0.5s ease',
+          }
+        }}
+      >
+        {/* Improved navigation accessibility */}
+        <nav role="presentation">
+          <Navigation is_mobile={true} setMobileMenuOpen={setMobileMenuOpen} />
+        </nav>
       </Drawer>
 
       <Outlet />

@@ -1,6 +1,7 @@
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Card, CardContent, Typography, Container } from '@mui/material';
+import { Card, CardContent, Typography, Container, Snackbar, Alert, Link as MuiLink } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import { AccountCircle } from '@mui/icons-material';
@@ -12,71 +13,55 @@ import { useLoginMutation } from '../../redux/features/authApi';
 import { useAuth } from '../../hooks/useAuth';
 
 const validationSchema = yup.object({
-    email: yup
-        .string()
-        .email('Enter a valid email')
-        .required('Email is required'),
-    password: yup
-        .string()
-        .min(8, 'Password should be of minimum 8 characters length')
-        .required('Password is required'),
+    email: yup.string().email('Enter a valid email').required('Email is required'),
+    password: yup.string().min(8, 'Password should be of minimum 8 characters length').required('Password is required'),
 });
 
 const Login = () => {
     const navigate = useNavigate();
     const { login: storeUser } = useAuth();
-
     const [login, { isLoading }] = useLoginMutation();
+    const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
+
     const formik = useFormik({
         initialValues: {
             email: '',
             password: '',
         },
         validationSchema,
-        onSubmit: async (values: any) => {
-            values.hashedPassword = values.password;
-            delete values.password;
-            // console.log(values);
+        onSubmit: async (values) => {
             try {
                 const response = await login(values).unwrap();
-                const token = response.result.accessToken
-                storeUser(token)
-                navigate('/')
+                storeUser(response.result.accessToken);
+                navigate('/');
             } catch (error) {
-                console.log(error);
+                setSnackbar({
+                    open: true,
+                    message: error.data?.message?.message || 'Failed to sign in. Please check your credentials and try again.',
+                    severity: 'error',
+                });
             }
         },
     });
 
-
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackbar({ ...snackbar, open: false });
+    };
 
     return (
-        <Container component="main" maxWidth="sm" sx={{
-            display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh',
-            padding: 0, // Remove padding to ensure content fits without scroll
-            margin: 'auto', // Centering the card vertically might need adjustments based on the card size
-            '& .MuiContainer-root': {
-                maxHeight: '100vh', // Ensure the container does not exceed the viewport height
-                overflow: 'hidden', // Hide overflow to prevent scrollbar appearance
-            }
-        }}>
-            <Card sx={{
-                minWidth: 275,
-                boxShadow: 3,
-                p: 4,
-                borderRadius: 2,
-                backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                display: 'flex', // This ensures the content is flexibly arranged
-                flexDirection: 'column', // Stack children vertically
-                justifyContent: 'center', // Center content vertically in the card
-                overflow: 'auto', // Adjusts for small viewports, but consider removing if unnecessary
-                maxHeight: '90vh', // Prevent card from getting too tall on small screens
-            }}>
-                <CardContent sx={{
-                    display: 'flex', flexDirection: 'column', alignItems: 'center',
-                }}>
+        <Container component="main" maxWidth="sm" sx={{ position: 'relative' }}>
+            <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+                <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
+            <Card sx={{ minWidth: 275, boxShadow: 3, p: 4, borderRadius: 2, backgroundColor: 'rgba(255, 255, 255, 0.8)', display: 'flex', flexDirection: 'column', justifyContent: 'center', overflow: 'auto', maxHeight: '90vh', mt: 8 }}>
+                <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                     <AccountCircle sx={{ fontSize: 60, my: 2, color: 'primary.main' }} />
-                    <Typography variant="h5" component="h2" gutterBottom sx={{ color: 'text.primary' }}>
+                    <Typography variant="h5" component="h2" gutterBottom>
                         Sign in
                     </Typography>
                     <form onSubmit={formik.handleSubmit} style={{ width: '100%' }} noValidate>
@@ -84,9 +69,9 @@ const Login = () => {
                         <FormInputField name="password" label="Password" type="password" icon={<LockIcon />} formik={formik} />
                         <ActionButton actionText="Sign in" isLoading={isLoading} />
                         <ForgotPasswordLink />
-                        <div className=''>
-                            <Link to="/register" className=''>Sign up</Link>
-                        </div>
+                        <Typography variant="body2" sx={{ mt: 2 }}>
+                            Don't have an account? <MuiLink component={Link} to="/register">Sign up</MuiLink>
+                        </Typography>
                     </form>
                 </CardContent>
             </Card>

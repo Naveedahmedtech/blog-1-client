@@ -36,7 +36,7 @@ interface CardCustomProps {
 }
 
 const CardCustom: React.FC<CardCustomProps> = ({ image, title, description, height, author, tags, category, page }) => {
-
+    console.log(author);
     return (
         <Card className="custom-card"
             style={{ height: "100%" }}
@@ -59,7 +59,10 @@ const CardCustom: React.FC<CardCustomProps> = ({ image, title, description, heig
                         </div>
                     )}
                     <Chip label={category} size="small" sx={{ my: 1 }} />
-                    <TextComponent sx={{ my: 1 }}>{author}</TextComponent>
+                    <div style={{ display: "flex", margin: "10px 0" }}>
+                        <TextComponent>Author: </TextComponent>
+                        <TextComponent fontWeight="bold">{author || "Unknown"}</TextComponent>
+                    </div>
                     <TextComponent gutterBottom variant="h5" component="div">
                         {title}
                     </TextComponent>

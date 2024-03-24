@@ -24,7 +24,7 @@ interface CategoryP {
 }
 
 export const postsApi = createApi({
-  reducerPath: "postsApi", // Ensures the API has a unique key in the Redux store
+  reducerPath: "postsApi", 
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
   }),
@@ -36,14 +36,28 @@ export const postsApi = createApi({
     "getAllTags",
     "addPost",
     "getAllPostsByAuthor",
-  ], // Use a more generic tag if you plan to expand endpoint types
+    "updatePost",
+    "deletePost",
+    "getAllTrendingPosts",
+  ],
   endpoints: (builder) => ({
     getAllPosts: builder.query<Post[], void | Record<string, unknown>>({
-      query: () => ({
-        url: "/posts/get-all",
+      query: ({ page = 1, limit = 5, sort = 'created_at', sortOrder = -1, categoryId }: any) => {
+        let url = `/posts/get-all?page=${page}&limit=${limit}&sort=${sort}&sortOrder=${sortOrder}`;
+        if (categoryId) {
+          url += `&categoryId=${categoryId}`;
+        }
+        return { url, method: "Get" };
+      },
+      providesTags: ["getAllPosts"],
+    }),
+
+    getAllTrendingPosts: builder.query<Post[], void | Record<string, unknown>>({
+      query: ({ page, limit }: any) => ({
+        url: `/posts/get-trending?page=${page}&limit=${limit}`,
         method: "Get",
       }),
-      providesTags: ["getAllPosts"],
+      providesTags: ["getAllTrendingPosts"],
     }),
     getAllCategories: builder.query<CategoryP, void | Record<string, unknown>>({
       query: () => ({
@@ -74,8 +88,8 @@ export const postsApi = createApi({
       providesTags: ["getAllPostsByCategories"],
     }),
     getAllPostsByAuthor: builder.query({
-      query: ({ author_id }) => ({
-        url: `/posts/get-by-author/${author_id}`,
+      query: ({ author_id, page, limit, sort, sortOrder, categoryId }) => ({
+        url: `/posts/get-by-author/${author_id}?page=${page}&limit=${limit}&sort=${sort}&sortOrder=${sortOrder}&categoryId=${categoryId}`,
         method: "Get",
       }),
       providesTags: ["getAllPostsByAuthor"],
@@ -86,7 +100,22 @@ export const postsApi = createApi({
         method: "POST",
         body: body,
       }),
-      invalidatesTags: ["addPost"],
+      invalidatesTags: ["getAllPosts", "getAllPostsByAuthor"],
+    }),
+    updatePost: builder.mutation({
+      query: (body) => ({
+        url: `/posts/update`,
+        method: "PUT",
+        body: body,
+      }),
+      invalidatesTags: ["getAllPosts", "getAllPostsByAuthor"],
+    }),
+    deletePost: builder.mutation({
+      query: (id) => ({
+        url: `/posts/delete/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["deletePost"],
     }),
   }),
 });
@@ -99,4 +128,7 @@ export const {
   useGetAllTagsQuery,
   useAddPostMutation,
   useGetAllPostsByAuthorQuery,
+  useUpdatePostMutation,
+  useDeletePostMutation,
+  useGetAllTrendingPostsQuery
 } = postsApi;

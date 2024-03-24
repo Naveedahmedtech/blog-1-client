@@ -6,7 +6,7 @@
  */
 function base64UrlDecode(str: string): string {
   // Convert base64-url to base64 by replacing URL-specific chars with base64 equivalents
-  const base64 = str.replace(/-/g, '+').replace(/_/g, '/');
+  const base64 = str.replace(/-/g, "+").replace(/_/g, "/");
 
   // Use `atob` to decode base64 string
   const decoded = atob(base64);
@@ -22,16 +22,15 @@ function base64UrlDecode(str: string): string {
  */
 export const decodeToken = (token: string): Object | null => {
   try {
-    const parts = token.split('.');
+    const parts = token.split(".");
     if (parts.length !== 3) {
-      throw new Error('Invalid JWT token format');
+      throw new Error("Invalid JWT token format");
     }
     const payload = parts[1];
     const decodedString = base64UrlDecode(payload);
 
     // Convert the decoded string to a JSON object
     const decodedPayload = JSON.parse(decodedString);
-    console.log(decodedPayload);
     return decodedPayload;
   } catch (error) {
     console.error("Failed to decode token:", error);

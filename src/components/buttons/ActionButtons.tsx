@@ -5,7 +5,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
-const ActionButtons = ({ row, navigate, handleOpenModal }:any) => {
+const ActionButtons = ({ row, navigate, handleOpenModal }: any) => {
     return (
         <>
             <Tooltip title="Details">
@@ -14,7 +14,7 @@ const ActionButtons = ({ row, navigate, handleOpenModal }:any) => {
                 </IconButton>
             </Tooltip>
             <Tooltip title="Update">
-                <IconButton onClick={() => navigate(`/update-post/${row._id}`)} sx={{ color: 'orange' }}>
+                <IconButton onClick={() => navigate(`/update-blogs/${row._id}`)} sx={{ color: 'orange' }}>
                     <EditIcon />
                 </IconButton>
             </Tooltip>

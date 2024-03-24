@@ -1,4 +1,4 @@
-import React, { useState,  ChangeEvent, FormEvent, ReactNode } from 'react';
+import React, { useState, ChangeEvent, FormEvent, ReactNode } from 'react';
 import {
     Card,
     TextField,
@@ -12,12 +12,14 @@ import {
     CircularProgress,
     Snackbar,
     SelectChangeEvent,
+    Typography,
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import { useAddPostMutation, useGetAllCategoriesQuery, useGetAllTagsQuery } from '../../redux/features/postsApi';
 import { useAuth } from '../../hooks/useAuth';
 import { decodeToken } from '../../utils/tokens';
+import { RootState } from '../../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 interface FormData {
     title: string;
@@ -26,31 +28,47 @@ interface FormData {
     tagIds: string[];
     image: File | null;
     imagePreviewUrl: string | null;
+    errors: {
+        title: string | null;
+        description: string | null;
+        category: string | null;
+        tags: string | null;
+        image: string | null;
+    };
 }
 
 
-const initialFormData = {
+const initialFormData: FormData = {
     title: '',
     description: '',
     category: '',
     tagIds: [],
     image: null,
     imagePreviewUrl: null,
+    errors: {
+        title: null,
+        description: null,
+        category: null,
+        tags: null,
+        image: null,
+    },
 };
-const AddPost: React.FC = () => {
+
+const AddBlog: React.FC = () => {
     const [formData, setFormData] = useState<FormData>(initialFormData);
     const [openSnackbar, setOpenSnackbar] = useState(false);
+
+    const navigate = useNavigate()
 
     const { data: categories, isLoading: categoryLoading } = useGetAllCategoriesQuery();
     const { data: tags, isLoading: tagsLoading } = useGetAllTagsQuery();
     const [addPost, { isLoading: postLoading }] = useAddPostMutation();
 
+    const dispatch = useDispatch()
+
     const { userData } = useAuth();
     const user = decodeToken(userData) as any;
     const userId = user?.sub;
-
-    const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.down('sm'));
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | { target: { name: string; value: unknown; }; }) => {
         const { name, value } = e.target;
@@ -68,6 +86,23 @@ const AddPost: React.FC = () => {
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        // Validate if all required fields are filled
+        const errors = {
+            title: !formData.title ? 'Title is required' : null,
+            description: !formData.description ? 'Description is required' : null,
+            category: !formData.category ? 'Category is required' : null,
+            tags: formData.tagIds.length === 0 ? 'At least one tag is required' : null,
+            image: !formData.image ? 'Image is required' : null,
+        };
+
+        setFormData((prev) => ({ ...prev, errors }));
+
+        // If there are any errors, prevent form submission
+        if (Object.values(errors).some((error) => error !== null)) {
+            return;
+        }
+
         const createdFormData = new FormData();
         createdFormData.append('title', formData.title);
         createdFormData.append('description', formData.description);
@@ -87,6 +122,7 @@ const AddPost: React.FC = () => {
             console.log("Add Post API response: ", response);
             setOpenSnackbar(true);
             setFormData(initialFormData);
+            navigate('/my-blogs')
         } catch (error) {
             console.error("Add Post Error", error);
         }
@@ -114,6 +150,8 @@ const AddPost: React.FC = () => {
                     name="title"
                     value={formData.title}
                     onChange={handleChange}
+                    error={!!formData.errors.title}
+                    helperText={formData.errors.title}
                 />
                 <TextField
                     label="Description"
@@ -125,6 +163,8 @@ const AddPost: React.FC = () => {
                     rows={4}
                     value={formData.description}
                     onChange={handleChange}
+                    error={!!formData.errors.description}
+                    helperText={formData.errors.description}
                 />
                 {categoryLoading ? (
                     <CircularProgress />
@@ -136,13 +176,19 @@ const AddPost: React.FC = () => {
                             onChange={handleChange}
                             name="category"
                             label="Category"
+                            error={!!formData.errors.category}
                         >
-                            {categories?.data.map((category:any) => (
+                            {categories?.data.map((category: any) => (
                                 <MenuItem key={category?._id} value={category?._id}>
                                     {category?.name}
                                 </MenuItem>
                             ))}
                         </Select>
+                        {formData.errors.category && (
+                            <Typography variant="caption" color="error">
+                                {formData.errors.category}
+                            </Typography>
+                        )}
                     </FormControl>
                 )}
                 {tagsLoading ? (
@@ -157,25 +203,32 @@ const AddPost: React.FC = () => {
                             input={<OutlinedInput label="Tags" />}
                             renderValue={(selected) => (
                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                                    {selected.map((selectedTagId:any) => {
-                                        const tagObj = tags?.data.find((tag:any) => tag._id === selectedTagId);
+                                    {selected.map((selectedTagId: any) => {
+                                        const tagObj = tags?.data.find((tag: any) => tag._id === selectedTagId);
                                         return (
                                             <Chip
                                                 key={selectedTagId}
-                                                label={tagObj ? tagObj.name : ''}
+                                                label={tagObj ? tagObj
+                                                    .name : ''}
                                                 sx={{ m: 0.5, color: 'white', backgroundColor: 'primary.main' }}
                                             />
                                         );
                                     })}
                                 </div>
                             )}
+                            error={!!formData.errors.tags}
                         >
-                            {tags?.data.map((tag:any) => (
+                            {tags?.data.map((tag: any) => (
                                 <MenuItem key={tag._id} value={tag._id}>
                                     {tag.name}
                                 </MenuItem>
                             ))}
                         </Select>
+                        {formData.errors.tags && (
+                            <Typography variant="caption" color="error">
+                                {formData.errors.tags}
+                            </Typography>
+                        )}
                     </FormControl>
                 )}
 
@@ -201,6 +254,11 @@ const AddPost: React.FC = () => {
                         />
                     </div>
                 )}
+                {formData.errors.image && (
+                    <Typography variant="caption" color="error">
+                        {formData.errors.image}
+                    </Typography>
+                )}
 
                 <Button type="submit" variant="contained" color="primary" fullWidth disabled={postLoading}>
                     {postLoading ? 'Submitting...' : 'Submit'}
@@ -217,4 +275,4 @@ const AddPost: React.FC = () => {
     );
 };
 
-export default AddPost;
+export default AddBlog;
