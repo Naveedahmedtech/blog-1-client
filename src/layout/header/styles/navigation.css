@@ -9,6 +9,9 @@
 .nav-mobile {
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+    /* height: 100vh; */
+    margin: 100px 0;
 }
 
 .nav-link {

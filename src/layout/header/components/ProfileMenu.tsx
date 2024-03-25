@@ -1,8 +1,10 @@
 import React from 'react';
 import { IconButton, Menu } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import Logout from '@mui/icons-material/Logout';
-import Profile from '@mui/icons-material/Person';
+import LogoutIcon from '@mui/icons-material/Logout';
+import ProfileIcon from '@mui/icons-material/Person';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import DescriptionIcon from '@mui/icons-material/Description';
 import ProfileMenuItem from './ProfileMenuItem'; // Import the new component
 
 const ProfileMenu = () => {
@@ -41,10 +43,10 @@ const ProfileMenu = () => {
                 open={isMenuOpen}
                 onClose={handleMenuClose}
             >
-                <ProfileMenuItem icon={<Profile fontSize="small" />} text="Profile" path="/profile" />
-                <ProfileMenuItem icon={<Profile fontSize="small" />} text="Add Blogs" path="/add-blogs" />
-                <ProfileMenuItem icon={<Profile fontSize="small" />} text="My Blogs" path="/my-blogs" />
-                <ProfileMenuItem icon={<Logout fontSize="small" />} text="Logout" path="/logout" />
+                <ProfileMenuItem icon={<ProfileIcon fontSize="small" />} text="Profile" path="/profile" />
+                <ProfileMenuItem icon={<AddBoxIcon fontSize="small" />} text="Add Blogs" path="/add-blogs" />
+                <ProfileMenuItem icon={<DescriptionIcon fontSize="small" />} text="My Blogs" path="/my-blogs" />
+                <ProfileMenuItem icon={<LogoutIcon fontSize="small" />} text="Logout" path="/logout" />
             </Menu>
         </>
     );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Card, CardContent, Typography, Container, Snackbar, Alert, Link as MuiLink } from '@mui/material';
@@ -21,7 +21,7 @@ const Login = () => {
     const navigate = useNavigate();
     const { login: storeUser } = useAuth();
     const [login, { isLoading }] = useLoginMutation();
-    const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
+    const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' }) as any;
 
     const formik = useFormik({
         initialValues: {
@@ -34,7 +34,7 @@ const Login = () => {
                 const response = await login(values).unwrap();
                 storeUser(response.result.accessToken);
                 navigate('/');
-            } catch (error) {
+            } catch (error:any) {
                 setSnackbar({
                     open: true,
                     message: error.data?.message?.message || 'Failed to sign in. Please check your credentials and try again.',
@@ -44,7 +44,7 @@ const Login = () => {
         },
     });
 
-    const handleCloseSnackbar = (event, reason) => {
+    const handleCloseSnackbar:any = (event:any, reason:any)  => {
         if (reason === 'clickaway') {
             return;
         }

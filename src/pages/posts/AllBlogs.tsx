@@ -1,5 +1,5 @@
 import { Box, CircularProgress, Pagination, Typography } from '@mui/material';
-import React, { useState } from 'react'
+import { useState } from 'react'
 import TextComponent from '../../components/text/TextComponent';
 import LinkComponent from '../../components/text/LinkComponent';
 import CardCustom from '../../components/card/CardCustom';
@@ -8,9 +8,9 @@ import { useGetAllPostsQuery } from '../../redux/features/postsApi';
 const AllBlogs = () => {
     const [page, setPage] = useState(1);
     const limit = 10;
-    const { data: posts, isLoading, isError, error } = useGetAllPostsQuery({ page, limit });
+    const { data: posts, isLoading, isError } = useGetAllPostsQuery({ page, limit }) as any;
 
-    const handlePageChange = (event, value) => {
+    const handlePageChange = (event:any, value:any) => {
         setPage(value);
     };
 
@@ -42,7 +42,7 @@ const AllBlogs = () => {
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <TextComponent gutterBottom variant="h4">All Posts</TextComponent>
             </Box>
-            {posts?.data?.results?.map(post => (
+            {posts?.data?.results?.map((post:any) => (
                 <Box className='flex-container' key={post.id} my={5}>
                     <LinkComponent className='flex-grow' to={`/posts/${post._id}`}>
                         <CardCustom

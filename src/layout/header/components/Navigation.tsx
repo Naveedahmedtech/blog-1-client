@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import '../styles/navigation.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleDropdown } from '../../../redux/features/dropdownSlice';
@@ -7,15 +7,18 @@ import { useRef } from 'react';
 import useOutsideClick from '../../../hooks/useOutsideClick';
 import { useGetAllCategoriesQuery } from '../../../redux/features/postsApi';
 import ProfileMenu from './ProfileMenu';
+import { useAuth } from '../../../hooks/useAuth';
+import { Button } from '@mui/material';
 
 const Navigation = ({ is_mobile, setMobileMenuOpen }: any) => {
+    const { userData } = useAuth();
     const dispatch = useDispatch();
-    const openDropdownIndex = useSelector((state) => state.dropdown.openDropdownIndex);
+    const openDropdownIndex = useSelector((state: any) => state.dropdown.openDropdownIndex);
     const { data, isLoading, isError, error } = useGetAllCategoriesQuery({});
     const categories = data?.data;
 
     // New handlers for mouse enter and leave
-    const handleMouseEnter = (index) => {
+    const handleMouseEnter = (index: any) => {
         dispatch(toggleDropdown(index));
     };
 
@@ -65,7 +68,7 @@ const Navigation = ({ is_mobile, setMobileMenuOpen }: any) => {
                                 ) : isError ? (
                                     <div>Error loading categories</div>
                                 ) : (
-                                    categories && categories.map((category, dropdownIndex) => (
+                                    categories && categories.map((category: any, dropdownIndex) => (
                                         <NavLink key={dropdownIndex} to={`/category/${category._id}?category_name=${category.name}`} className="nav-link" role="menuitem">
                                             {category.name}
                                         </NavLink>
@@ -76,8 +79,17 @@ const Navigation = ({ is_mobile, setMobileMenuOpen }: any) => {
                     );
                 }
             })}
-            <ProfileMenu />
-        </nav>
+            <div className="">
+                {userData ? (
+                    <ProfileMenu />
+                ) : (
+                    <div>
+                        <Button variant='outlined' sx={{ margin: "0 20px 0 0" }} component={Link} to="/login">Login</Button>
+                        <Button variant='contained' component={Link} to="/register">Register</Button>
+                    </div>
+                )}
+            </div>
+        </nav >
     );
 };
 

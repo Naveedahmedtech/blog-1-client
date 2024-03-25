@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent, FormEvent, SelectChangeEvent } from 'react';
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import {
     Card,
     TextField,
@@ -11,6 +11,7 @@ import {
     Chip,
     CircularProgress,
     Snackbar,
+    Typography,
 } from '@mui/material';
 import { useGetAllCategoriesQuery, useGetAllTagsQuery, useGetPostByIdQuery, useUpdatePostMutation } from '../../redux/features/postsApi';
 import { useAuth } from '../../hooks/useAuth';
@@ -38,7 +39,7 @@ const initialFormData = {
 
 const UpdateBlogs = () => {
     const params = useParams<{ id: string }>();
-    const { id } = params;
+    const { id } = params as any;
     const navigate = useNavigate()
     const [updatePost, { isLoading: addLoading }] = useUpdatePostMutation();
 
@@ -99,14 +100,14 @@ const UpdateBlogs = () => {
         try {
             const response = await updatePost(createdFormData).unwrap();
             setOpenSnackbar(true);
-            setFormData(initialFormData); 
+            setFormData(initialFormData);
             navigate('/my-blogs')
         } catch (error) {
             console.error("Add Post Error", error);
         }
     };
 
-    const handleTagsChange = (event: SelectChangeEvent<string[]>) => {
+    const handleTagsChange = (event: any) => {
         const value = event.target.value;
         setFormData((prev) => ({
             ...prev,
@@ -124,6 +125,7 @@ const UpdateBlogs = () => {
 
     return (
         <Card sx={{ p: 2 }}>
+            <Typography variant='h4'>Update Blog</Typography>
             <form onSubmit={handleSubmit}>
                 <TextField
                     label="Title"

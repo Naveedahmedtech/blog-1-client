@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { TextField, Button, Box, CircularProgress, Alert } from '@mui/material';
+import { useState } from 'react';
+import { TextField, Button, Box, CircularProgress, Alert, Typography } from '@mui/material';
 import { useChangePasswordMutation } from '../../../redux/features/authApi';
 import { useAuth } from '../../../hooks/useAuth';
 import { decodeToken } from '../../../utils/tokens';
@@ -9,14 +9,14 @@ const PasswordForm = () => {
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [feedbackMsg, setFeedbackMsg] = useState('');
-    const [feedbackType, setFeedbackType] = useState('info'); // 'success', 'error', 'info'
+    const [feedbackType, setFeedbackType] = useState('info') as any; // 'success', 'error', 'info'
     const { userData, } = useAuth(); // Ensure you're destructuring updateToken here
     const user = decodeToken(userData) as any;
     const id = user?.sub;
 
-    const [changePassword, { isLoading, isSuccess, isError, error }] = useChangePasswordMutation();
+    const [changePassword, { isLoading, error }] = useChangePasswordMutation();
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event: any) => {
         event.preventDefault();
         if (newPassword !== confirmNewPassword) {
             setFeedbackMsg('New passwords do not match.');
@@ -41,7 +41,7 @@ const PasswordForm = () => {
 
     return (
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
-            <h3>Change Password</h3>
+            <Typography variant='h5'>Change Password</Typography>
             {feedbackMsg && (
                 <Alert severity={feedbackType} sx={{ mb: 2 }}>
                     {feedbackMsg}

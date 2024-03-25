@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent, ReactNode } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 import {
     Card,
     TextField,
@@ -17,8 +17,7 @@ import {
 import { useAddPostMutation, useGetAllCategoriesQuery, useGetAllTagsQuery } from '../../redux/features/postsApi';
 import { useAuth } from '../../hooks/useAuth';
 import { decodeToken } from '../../utils/tokens';
-import { RootState } from '../../redux/store';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 interface FormData {
@@ -141,6 +140,7 @@ const AddBlog: React.FC = () => {
 
     return (
         <Card sx={{ p: 2 }}>
+            <Typography variant='h4'>Add Blog</Typography>
             <form onSubmit={handleSubmit}>
                 <TextField
                     label="Title"

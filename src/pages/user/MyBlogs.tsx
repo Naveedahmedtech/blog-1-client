@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Snackbar, FormControl, InputLabel, Select, MenuItem, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import ConfirmationModal from '../../components/modals/ConfirmationModal';
@@ -42,33 +42,33 @@ const MyBlogs = () => {
         refetch();
     }, [refetch]);
 
-    const handleChangePage = (event, newPage) => {
+    const handleChangePage = (event:any, newPage:any) => {
         setPage(newPage + 1); // Adding 1 because Material-UI pagination starts from 0
     };
 
-    const handleChangeRowsPerPage = (event) => {
+    const handleChangeRowsPerPage = (event:any) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(1); // Reset page to 1 when changing rows per page
     };
 
-    const handleSortChange = (event) => {
+    const handleSortChange = (event:any) => {
         const { value } = event.target;
         setPage(1); // Reset page to 1 when changing sorting criteria
         setSortBy(value);
     };
 
-    const handleSortOrderChange = (event) => {
+    const handleSortOrderChange = (event:any) => {
         const { value } = event.target;
         setSortOrder(parseInt(value, 10));
     };
 
-    const handleFilterChange = (e) => {
+    const handleFilterChange = (e:any) => {
         setPage(1);
         const selectedCategoryId = e.target.value;
         setCategoryId(selectedCategoryId); // Directly update categoryId state
     };
 
-    const handleErrorSnackbarClose = (event, reason) => {
+    const handleErrorSnackbarClose = (event:any, reason:any) => {
         if (reason === 'clickaway') {
             return;
         }
@@ -83,7 +83,7 @@ const MyBlogs = () => {
 
     const handleDeletePost = async () => {
         try {
-            const response = await deletePost(currentPostId);
+            await deletePost(currentPostId);
             setIsModalOpen(false)
             refetch()
         } catch (error) {

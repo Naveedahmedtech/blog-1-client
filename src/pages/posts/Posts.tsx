@@ -1,13 +1,14 @@
 import { useParams } from 'react-router-dom';
 import { useGetPostByIdQuery } from '../../redux/features/postsApi';
 import CardCustom from '../../components/card/CardCustom';
+import LoadingIndicator from '../../components/loading/LoadingIndicator';
 
 const Posts = () => {
     const param = useParams()
     const { post_id } = param;
-    const { data: post, isLoading, isError } = useGetPostByIdQuery({ post_id })
+    const { data: post, isLoading } = useGetPostByIdQuery({ post_id }) as any
     if (isLoading) {
-        return <h1>Loading....</h1>
+        return <LoadingIndicator />
     }
     return (
         <>

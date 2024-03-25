@@ -26,11 +26,11 @@ const navigationLinks: NavigationLink[] = [
       { type: "link", label: "Category 2", to: "/category2" },
     ],
   },
-  {
-    type: "link",
-    label: "Contact Us",
-    to: "/contact",
-  },
+  // {
+  //   type: "link",
+  //   label: "Contact Us",
+  //   to: "/contact",
+  // },
 ];
 
 export default navigationLinks;

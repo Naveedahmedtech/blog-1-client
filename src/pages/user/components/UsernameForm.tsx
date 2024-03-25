@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { TextField, Button, Box, CircularProgress, Alert } from '@mui/material';
+import { useState } from 'react';
+import { TextField, Button, Box, CircularProgress, Alert, Typography } from '@mui/material';
 import { useUpdateUsernameMutation } from '../../../redux/features/authApi';
 import { useAuth } from '../../../hooks/useAuth';
 import { decodeToken } from '../../../utils/tokens';
@@ -10,10 +10,10 @@ const UsernameForm = () => {
     const id = user?.sub;
     const existingUsername = user?.username;
     const [username, setUsername] = useState(existingUsername ? existingUsername : '');
-    const [updateUsername, { isLoading, isSuccess, isError, error }] = useUpdateUsernameMutation();
+    const [updateUsername, { isLoading, isSuccess, isError }] = useUpdateUsernameMutation();
     const [feedbackMsg, setFeedbackMsg] = useState('');
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event: any) => {
         event.preventDefault();
         try {
             const response = await updateUsername({ id: id, newUsername: username }).unwrap();
@@ -28,7 +28,7 @@ const UsernameForm = () => {
 
     return (
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
-            <h3>Change Username</h3>
+            <Typography variant='h5'>Change Username</Typography>
             {feedbackMsg && (
                 <Alert severity={isSuccess ? "success" : isError ? "error" : "info"}>
                     {feedbackMsg}

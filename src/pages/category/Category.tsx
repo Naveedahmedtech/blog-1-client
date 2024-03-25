@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, Pagination } from '@mui/material';
 import { useParams, useSearchParams } from 'react-router-dom';
 import TextComponent from '../../components/text/TextComponent';
 import LinkComponent from '../../components/text/LinkComponent';
 import CardCustom from '../../components/card/CardCustom';
 import { useGetAllPostsQuery } from '../../redux/features/postsApi';
+import LoadingIndicator from '../../components/loading/LoadingIndicator';
 
 const Category = () => {
   const { category_id } = useParams();
@@ -16,13 +17,13 @@ const Category = () => {
   const limit = 10;
 
   // Fetch posts
-  const { data: posts, isLoading, isError } = useGetAllPostsQuery({
+  const { data: posts, isLoading } = useGetAllPostsQuery({
     page,
     limit,
     sort: "createdAt",
     sortOrder: "desc",
     categoryId: category_id
-  });
+  }) as any;
 
   useEffect(() => {
     // Update the URL search params when page changes
@@ -32,10 +33,10 @@ const Category = () => {
   }, [page, searchParams]);
 
   if (isLoading) {
-    return <h1>Loading...</h1>;
+    return <LoadingIndicator />;
   }
 
-  const handlePageChange = (event, value) => {
+  const handlePageChange = (value: any) => {
     setPage(value);
   };
 
@@ -47,7 +48,7 @@ const Category = () => {
         <TextComponent gutterBottom variant="body1" color="red" textAlign="center">No result found "{categoryName}"</TextComponent>
       }
       {
-        posts?.data?.results?.map((post) => (
+        posts?.data?.results?.map((post: any) => (
           <Box className='flex-container' key={post?._id} my={5}>
             <LinkComponent className='flex-grow' to={`/posts/${post?._id}`}>
               <CardCustom

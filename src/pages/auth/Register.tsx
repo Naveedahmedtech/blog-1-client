@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Card, CardContent, Typography, Container, Snackbar, Alert } from '@mui/material';
+import { Card, CardContent, Typography, Container, Snackbar, Alert, Link as MuiLink } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import { AccountCircle } from '@mui/icons-material';
 import FormInputField from '../../components/form/FormInputField';
 import ActionButton from './components/LoginButton';
 import { useRegisterMutation } from '../../redux/features/authApi';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const validationSchema = yup.object({
     username: yup.string().required('Username is required'),
@@ -33,7 +33,7 @@ const Register = () => {
             try {
                 await register(values).unwrap();
                 navigate('/login');
-            } catch (error:any) {
+            } catch (error: any) {
                 // Assuming error is structured as shown in your example
                 const message = error.data?.message?.message || 'Failed to register. Please try again later.';
                 setSnackbarMessage(message);
@@ -42,7 +42,7 @@ const Register = () => {
         },
     });
 
-    const handleCloseSnackbar = (event, reason) => {
+    const handleCloseSnackbar:any = (event:any, reason:any) => {
         if (reason === 'clickaway') {
             return;
         }
@@ -69,6 +69,9 @@ const Register = () => {
                         <ActionButton actionText="Register" isLoading={isLoading} />
                     </form>
                 </CardContent>
+                <Typography variant="body2" sx={{ mt: 2 }}>
+                    Already have an account? <MuiLink component={Link} to="/login">Login</MuiLink>
+                </Typography>
             </Card>
         </Container>
     );
