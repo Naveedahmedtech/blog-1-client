@@ -1,7 +1,7 @@
 import TrendingPosts from './components/TrendingPosts';
-import LatestPosts from './components/LatestPosts';
 import { useGetAllPostsQuery, useGetAllTrendingPostsQuery } from '../../redux/features/postsApi';
 import { CircularProgress, Box, Typography } from '@mui/material';
+import LatestPosts from './components/latestPosts';
 
 const Home = () => {
   const limit = 5;
