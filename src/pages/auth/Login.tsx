@@ -44,7 +44,7 @@ const Login = () => {
         },
     });
 
-    const handleCloseSnackbar:any = (event:any, reason:any)  => {
+    const handleCloseSnackbar:any = (reason:any)  => {
         if (reason === 'clickaway') {
             return;
         }

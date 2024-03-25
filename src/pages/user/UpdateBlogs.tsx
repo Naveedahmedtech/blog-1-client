@@ -98,7 +98,7 @@ const UpdateBlogs = () => {
         }
 
         try {
-            const response = await updatePost(createdFormData).unwrap();
+            await updatePost(createdFormData).unwrap();
             setOpenSnackbar(true);
             setFormData(initialFormData);
             navigate('/my-blogs')

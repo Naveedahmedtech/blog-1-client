@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import TrendingPosts from './components/TrendingPosts';
 import LatestPosts from './components/LatestPosts';
 import { useGetAllPostsQuery, useGetAllTrendingPostsQuery } from '../../redux/features/postsApi';
@@ -6,10 +5,10 @@ import { CircularProgress, Box, Typography } from '@mui/material';
 
 const Home = () => {
   const limit = 5;
-  const { data: posts, isLoading, isError, error } = useGetAllPostsQuery({ page: 1, limit });
-  const { data: trendingPosts, isLoading: isLoadingTrendingPost, isError: isTrendingPostError, error: errorTrendingPost } = useGetAllTrendingPostsQuery({ page: 1, limit });
+  const { data: posts, isLoading, isError } = useGetAllPostsQuery({ page: 1, limit }) as any;
+  const { data: trendingPosts, isLoading: isLoadingTrending } = useGetAllTrendingPostsQuery({ page: 1, limit }) as any;
 
-  if (isLoading) {
+  if (isLoading || isLoadingTrending) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="80vh">
         <CircularProgress />

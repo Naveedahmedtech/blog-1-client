@@ -17,7 +17,6 @@ import {
 import { useAddPostMutation, useGetAllCategoriesQuery, useGetAllTagsQuery } from '../../redux/features/postsApi';
 import { useAuth } from '../../hooks/useAuth';
 import { decodeToken } from '../../utils/tokens';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 interface FormData {
@@ -63,7 +62,6 @@ const AddBlog: React.FC = () => {
     const { data: tags, isLoading: tagsLoading } = useGetAllTagsQuery();
     const [addPost, { isLoading: postLoading }] = useAddPostMutation();
 
-    const dispatch = useDispatch()
 
     const { userData } = useAuth();
     const user = decodeToken(userData) as any;

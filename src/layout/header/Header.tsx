@@ -1,9 +1,8 @@
 // components/HideAppBar.js
 import { useState } from 'react';
-import { AppBar, Toolbar, CssBaseline, IconButton, Box, useTheme, useMediaQuery, Drawer } from '@mui/material';
+import { AppBar, Toolbar, CssBaseline, IconButton, useTheme, useMediaQuery, Drawer } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import Navigation from './components/Navigation';
-import ProfileMenu from './components/ProfileMenu';
 import Logo from './components/Logo';
 import HideOnScroll from './components/HideOnScroll';
 import { Outlet } from 'react-router-dom';

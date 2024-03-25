@@ -37,12 +37,12 @@ const MyBlogs = () => {
         refetchOnMountOrArgChange: true,
     });
     const { data: categories, isLoading: categoryLoading } = useGetAllCategoriesQuery();
-    const [deletePost, { isLoading: deleteLoading }] = useDeletePostMutation()
+    const [deletePost] = useDeletePostMutation()
     useEffect(() => {
         refetch();
     }, [refetch]);
 
-    const handleChangePage = (event:any, newPage:any) => {
+    const handleChangePage = (newPage:any) => {
         setPage(newPage + 1); // Adding 1 because Material-UI pagination starts from 0
     };
 
@@ -68,7 +68,7 @@ const MyBlogs = () => {
         setCategoryId(selectedCategoryId); // Directly update categoryId state
     };
 
-    const handleErrorSnackbarClose = (event:any, reason:any) => {
+    const handleErrorSnackbarClose = (reason:any) => {
         if (reason === 'clickaway') {
             return;
         }

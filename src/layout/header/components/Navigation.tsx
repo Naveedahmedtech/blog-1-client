@@ -14,7 +14,7 @@ const Navigation = ({ is_mobile, setMobileMenuOpen }: any) => {
     const { userData } = useAuth();
     const dispatch = useDispatch();
     const openDropdownIndex = useSelector((state: any) => state.dropdown.openDropdownIndex);
-    const { data, isLoading, isError, error } = useGetAllCategoriesQuery({});
+    const { data, isLoading, isError } = useGetAllCategoriesQuery({});
     const categories = data?.data;
 
     // New handlers for mouse enter and leave

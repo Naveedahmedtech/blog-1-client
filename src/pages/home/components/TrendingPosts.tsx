@@ -11,7 +11,7 @@ import LinkComponent from '../../../components/text/LinkComponent';
 //     { id: 3, image: blog3, title: "some-title", description: "some description", author: "some-author", tags: ["#trending"], category: "some-category" },
 // ];
 
-const TrendingPosts = ({ posts }) => {
+const TrendingPosts = ({ posts }:any) => {
     if (posts?.length === 0) {
         return (
             <Box textAlign="center" my={4}>
