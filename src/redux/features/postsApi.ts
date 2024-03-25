@@ -41,8 +41,9 @@ export const postsApi = createApi({
     "getAllTrendingPosts",
   ],
   endpoints: (builder) => ({
-    getAllPosts: builder.query<Post[], void | Record<string, unknown>>({
+    getAllPosts: builder.query({
       query: ({ page = 1, limit = 5, sort = 'created_at', sortOrder = -1, categoryId }: any) => {
+        console.log(page)
         let url = `/posts/get-all?page=${page}&limit=${limit}&sort=${sort}&sortOrder=${sortOrder}`;
         if (categoryId) {
           url += `&categoryId=${categoryId}`;
@@ -118,7 +119,7 @@ export const postsApi = createApi({
       invalidatesTags: ["deletePost"],
     }),
   }),
-});
+}) ;
 
 export const {
   useGetAllPostsQuery,

@@ -27,16 +27,17 @@ const Category = () => {
 
   useEffect(() => {
     // Update the URL search params when page changes
-    const newSearchParams = new URLSearchParams(searchParams.toString());
+    const newSearchParams = new URLSearchParams(window.location.search);
     newSearchParams.set('page', page.toString());
     window.history.replaceState(null, '', `${window.location.pathname}?${newSearchParams.toString()}`);
-  }, [page, searchParams]);
+  }, [page]);
+
 
   if (isLoading) {
     return <LoadingIndicator />;
   }
 
-  const handlePageChange = (value: any) => {
+  const handlePageChange = (_event:any, value: any) => {
     setPage(value);
   };
 

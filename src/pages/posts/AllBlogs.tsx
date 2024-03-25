@@ -10,7 +10,7 @@ const AllBlogs = () => {
     const limit = 10;
     const { data: posts, isLoading, isError } = useGetAllPostsQuery({ page, limit }) as any;
 
-    const handlePageChange = (value:any) => {
+    const handlePageChange = (_event: any, value:any) => {
         setPage(value);
     };
 
