@@ -17,7 +17,6 @@ import { useGetAllCategoriesQuery, useGetAllTagsQuery, useGetPostByIdQuery, useU
 import { useAuth } from '../../hooks/useAuth';
 import { decodeToken } from '../../utils/tokens';
 import { useNavigate, useParams } from 'react-router-dom';
-import { BASE_URL } from '../../../baseUrl';
 
 interface FormData {
     title: string;
