@@ -7,7 +7,6 @@ import { CardActionArea, Chip } from '@mui/material';
 import TextComponent from '../text/TextComponent';
 import { truncatedDescription } from '../../utils/text.utils';
 import './cardCustom.css';
-import { BASE_URL } from '../../../baseUrl';
 
 
 interface Tag {
