@@ -55,7 +55,7 @@ const UpdateBlogs = () => {
                 category: postData?.data?.categoryId?._id,
                 tagIds: postData?.data?.tags?.map((tag: any) => tag._id),
                 image: postData?.data?.image,
-                imagePreviewUrl: BASE_URL + '/uploads/' + postData?.data?.image,
+                imagePreviewUrl: postData?.data?.image,
             })
         }
     }, [postData]);

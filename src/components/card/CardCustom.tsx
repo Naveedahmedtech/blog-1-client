@@ -45,7 +45,7 @@ const CardCustom: React.FC<CardCustomProps> = ({ image, title, description, heig
                 <CardMedia
                     component="img"
                     height={height}
-                    image={`${BASE_URL}/uploads/${image}`}
+                    image={image}
                     alt="Image"
                 />
                 <CardContent>
