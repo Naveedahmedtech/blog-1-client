@@ -7,7 +7,6 @@ import { CardActionArea, Chip } from '@mui/material';
 import TextComponent from '../text/TextComponent';
 import { truncatedDescription } from '../../utils/text.utils';
 import './cardCustom.css';
-import { BASE_URL } from '../../../baseUrl';
 
 
 interface Tag {
@@ -45,7 +44,7 @@ const CardCustom: React.FC<CardCustomProps> = ({ image, title, description, heig
                 <CardMedia
                     component="img"
                     height={height}
-                    image={`${BASE_URL}/uploads/${image}`}
+                    image={image}
                     alt="Image"
                 />
                 <CardContent>
