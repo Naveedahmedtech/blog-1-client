@@ -24,7 +24,7 @@ interface CategoryP {
 }
 
 export const postsApi = createApi({
-  reducerPath: "postsApi", 
+  reducerPath: "postsApi",
   baseQuery: fetchBaseQuery({
     baseUrl: BASE_URL,
   }),
@@ -42,8 +42,14 @@ export const postsApi = createApi({
   ],
   endpoints: (builder) => ({
     getAllPosts: builder.query({
-      query: ({ page = 1, limit = 5, sort = 'created_at', sortOrder = -1, categoryId }: any) => {
-        console.log(page)
+      query: ({
+        page = 1,
+        limit = 5,
+        sort = "created_at",
+        sortOrder = -1,
+        categoryId,
+      }: any) => {
+        console.log(page);
         let url = `/posts/get-all?page=${page}&limit=${limit}&sort=${sort}&sortOrder=${sortOrder}`;
         if (categoryId) {
           url += `&categoryId=${categoryId}`;
@@ -101,7 +107,7 @@ export const postsApi = createApi({
         method: "POST",
         body: body,
       }),
-      invalidatesTags: ["getAllPosts", "getAllPostsByAuthor"],
+      invalidatesTags: ["getAllPosts", "getAllPostsByAuthor", "getPostById"],
     }),
     updatePost: builder.mutation({
       query: (body) => ({
@@ -119,7 +125,7 @@ export const postsApi = createApi({
       invalidatesTags: ["deletePost"],
     }),
   }),
-}) ;
+}); ;
 
 export const {
   useGetAllPostsQuery,

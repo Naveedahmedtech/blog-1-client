@@ -35,6 +35,7 @@ const TrendingPosts = ({ posts }: any) => {
                             author={posts?.[0]?.authorId?.username}
                             tags={posts?.[0]?.tags}
                             category={posts?.[0]?.categoryId?.name}
+                            createdAt={posts?.[0]?.createdAt}
                         />
                     </LinkComponent>
                 }
@@ -51,6 +52,8 @@ const TrendingPosts = ({ posts }: any) => {
                                 author={posts?.[1]?.authorId?.username}
                                 tags={posts?.[1]?.tags}
                                 category={posts?.[1]?.categoryId?.name}
+                                createdAt={posts?.[1]?.createdAt}
+
 
                             />
                         </LinkComponent>
@@ -68,6 +71,8 @@ const TrendingPosts = ({ posts }: any) => {
                                 author={posts?.[2]?.authorId?.username}
                                 tags={posts?.[2]?.tags}
                                 category={posts?.[2]?.categoryId?.name}
+                                createdAt={posts?.[2]?.createdAt}
+
                             />
                         </LinkComponent>
                     }

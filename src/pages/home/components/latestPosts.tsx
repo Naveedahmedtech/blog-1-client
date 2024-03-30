@@ -17,7 +17,7 @@ const LatestPosts = ({ posts }: any) => {
     <Box sx={{ my: 4 }}>
       <TextComponent gutterBottom variant="h4">Latest Posts</TextComponent>
       {
-        posts?.map((post:any) => (
+        posts?.map((post: any) => (
           <Box className='flex-container' key={post?.id} my={5}>
             <LinkComponent className='flex-grow' to={`/posts/${post?._id}`}>
               <CardCustom
@@ -29,6 +29,7 @@ const LatestPosts = ({ posts }: any) => {
                 author={post?.authorId?.username}
                 tags={post?.tags}
                 category={post?.categoryId?.name}
+                createdAt={post?.createdAt}
               />
             </LinkComponent>
           </Box>

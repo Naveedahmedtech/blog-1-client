@@ -13,7 +13,7 @@ const Posts = () => {
     return (
         <>
             <CardCustom
-                key={post?.data?.id}
+                key={post?.data?._id}
                 image={post?.data?.image}
                 title={post?.data?.title}
                 description={post?.data?.description}
@@ -21,6 +21,7 @@ const Posts = () => {
                 author={post?.data?.authorId?.username}
                 tags={post?.data?.tags}
                 category={post?.data?.categoryId?.name}
+                createdAt={post?.data?.createdAt}
                 page="detail"
             />
         </>

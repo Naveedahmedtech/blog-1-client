@@ -3,10 +3,11 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { CardActionArea, Chip } from '@mui/material';
+import {  Chip } from '@mui/material';
 import TextComponent from '../text/TextComponent';
 import { truncatedDescription } from '../../utils/text.utils';
 import './cardCustom.css';
+import { formatDate } from '../../utils/formatData';
 
 
 interface Tag {
@@ -16,13 +17,6 @@ interface Tag {
     updatedAt: string;
 }
 
-// interface Tags {
-//     id: string;
-//     postId: string;
-//     tagId: string;
-//     tag: Tag;
-// }
-
 interface CardCustomProps {
     image: string;
     title: string;
@@ -31,16 +25,16 @@ interface CardCustomProps {
     author: string;
     tags?: Tag[];
     category: string;
+    createdAt: string;
     page?: string;
 }
 
-const CardCustom: React.FC<CardCustomProps> = ({ image, title, description, height, author, tags, category, page }) => {
-    console.log(author);
+const CardCustom: React.FC<CardCustomProps> = ({ image, title, description, height, author, tags, category, createdAt, page }) => {
     return (
         <Card className="custom-card"
             style={{ height: "100%" }}
         >
-            <CardActionArea>
+            <>
                 <CardMedia
                     component="img"
                     height={height}
@@ -60,16 +54,20 @@ const CardCustom: React.FC<CardCustomProps> = ({ image, title, description, heig
                     <Chip label={category} size="small" sx={{ my: 1 }} />
                     <div style={{ display: "flex", margin: "10px 0" }}>
                         <TextComponent>Author: </TextComponent>
-                        <TextComponent fontWeight="bold">{author || "Unknown"}</TextComponent>
+                        <TextComponent fontWeight="bold" ml={1}>{author || "Unknown"}</TextComponent>
                     </div>
-                    <TextComponent gutterBottom variant="h5" component="div">
+                    <div style={{ display: "flex", margin: "10px 0" }}>
+                        <TextComponent>Published at: </TextComponent>
+                        <TextComponent fontWeight="bold" ml={1}> {formatDate(createdAt) || "Unknown"}</TextComponent>
+                    </div>
+                    <TextComponent gutterBottom variant="h4" component="div">
                         {title}
                     </TextComponent>
-                    <TextComponent variant="body2" color="text.secondary">
-                        {page === "detail" ? description : truncatedDescription(description)}
-                    </TextComponent>
+                    <Typography variant="body2" color="text.secondary" component="div"
+                        dangerouslySetInnerHTML={{ __html: page == "detail" ? description : truncatedDescription(description) }}>
+                    </Typography>
                 </CardContent>
-            </CardActionArea>
+            </>
         </Card>
     );
 }
