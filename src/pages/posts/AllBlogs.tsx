@@ -46,13 +46,14 @@ const AllBlogs = () => {
                 <Box className='flex-container' key={post.id} my={5}>
                     <LinkComponent className='flex-grow' to={`/posts/${post._id}`}>
                         <CardCustom
-                            image={post.image}
-                            title={post.title}
-                            description={post.description}
+                            image={post?.image}
+                            title={post?.title}
+                            description={post?.description}
                             height="350"
-                            author={post.authorId?.username}
-                            tags={post.tags}
-                            category={post.categoryId?.name}
+                            author={post?.authorId?.username}
+                            tags={post?.tags}
+                            category={post?.categoryId?.name}
+                            createdAt={post?.createdAt}
                         />
                     </LinkComponent>
                 </Box>

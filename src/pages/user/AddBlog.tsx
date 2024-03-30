@@ -18,6 +18,9 @@ import { useAddPostMutation, useGetAllCategoriesQuery, useGetAllTagsQuery } from
 import { useAuth } from '../../hooks/useAuth';
 import { decodeToken } from '../../utils/tokens';
 import { useNavigate } from 'react-router-dom';
+import ReactQuill from 'react-quill';
+import hljs from 'highlight.js';
+
 
 interface FormData {
     title: string;
@@ -51,6 +54,27 @@ const initialFormData: FormData = {
         image: null,
     },
 };
+
+
+const modules = {
+    toolbar: [
+        [{ 'header': [1, 2, 3, false] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        ['link', 'image', 'code-block'],
+        ['clean']
+    ],
+    syntax: {
+        highlight: (text:any) => hljs.highlightAuto(text).value
+    }
+};
+
+const formats = [
+    'header',
+    'bold', 'italic', 'underline', 'strike', 'blockquote',
+    'list', 'bullet',
+    'link', 'image', 'code-block'
+];
 
 const AddBlog: React.FC = () => {
     const [formData, setFormData] = useState<FormData>(initialFormData);
@@ -151,19 +175,15 @@ const AddBlog: React.FC = () => {
                     error={!!formData.errors.title}
                     helperText={formData.errors.title}
                 />
-                <TextField
-                    label="Description"
-                    variant="outlined"
-                    fullWidth
-                    margin="normal"
-                    name="description"
-                    multiline
-                    rows={4}
+                <ReactQuill
+                    theme="snow"
                     value={formData.description}
-                    onChange={handleChange}
-                    error={!!formData.errors.description}
-                    helperText={formData.errors.description}
+                    onChange={(content) => handleChange({ target: { name: 'description', value: content } })}
+                    modules={modules}
+                    formats={formats}
+                    placeholder="Write something amazing..."
                 />
+
                 {categoryLoading ? (
                     <CircularProgress />
                 ) : (

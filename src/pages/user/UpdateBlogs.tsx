@@ -17,6 +17,29 @@ import { useGetAllCategoriesQuery, useGetAllTagsQuery, useGetPostByIdQuery, useU
 import { useAuth } from '../../hooks/useAuth';
 import { decodeToken } from '../../utils/tokens';
 import { useNavigate, useParams } from 'react-router-dom';
+import ReactQuill from 'react-quill';
+import hljs from 'highlight.js';
+
+
+const modules = {
+    toolbar: [
+        [{ 'header': [1, 2, 3, false] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+        ['link', 'image', 'code-block'],
+        ['clean']
+    ],
+    syntax: {
+        highlight: (text: any) => hljs.highlightAuto(text).value
+    }
+};
+
+const formats = [
+    'header',
+    'bold', 'italic', 'underline', 'strike', 'blockquote',
+    'list', 'bullet',
+    'link', 'image', 'code-block'
+];
 
 interface FormData {
     title: string;
@@ -58,8 +81,6 @@ const UpdateBlogs = () => {
             })
         }
     }, [postData]);
-
-    console.log(postData);
 
     const [openSnackbar, setOpenSnackbar] = useState(false);
 
@@ -138,16 +159,13 @@ const UpdateBlogs = () => {
                     value={formData.title}
                     onChange={handleChange}
                 />
-                <TextField
-                    label="Description"
-                    variant="outlined"
-                    fullWidth
-                    margin="normal"
-                    name="description"
-                    multiline
-                    rows={4}
+                <ReactQuill
+                    theme="snow"
                     value={formData.description}
-                    onChange={handleChange}
+                    onChange={(content) => handleChange({ target: { name: 'description', value: content } })}
+                    modules={modules}
+                    formats={formats}
+                    placeholder="Write something amazing..."
                 />
                 <FormControl fullWidth margin="normal">
                     <InputLabel>Category</InputLabel>
