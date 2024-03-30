@@ -59,6 +59,8 @@ const UpdateBlogs = () => {
         }
     }, [postData]);
 
+    console.log(postData);
+
     const [openSnackbar, setOpenSnackbar] = useState(false);
 
     const { userData } = useAuth();
@@ -86,6 +88,7 @@ const UpdateBlogs = () => {
         createdFormData.append('title', formData.title);
         createdFormData.append('description', formData.description);
         createdFormData.append('categoryId', formData.category);
+        createdFormData.append('imageId', postData?.data?.imageId);
         if (formData.image) createdFormData.append('image', formData.image);
         createdFormData.append('authorId', userId || '');
 
