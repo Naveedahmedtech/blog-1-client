@@ -61,6 +61,7 @@ const Category = () => {
                 author={post?.authorId?.username}
                 tags={post?.tags}
                 category={post?.categoryId?.name}
+                createdAt={post?.createdAt}
               />
             </LinkComponent>
           </Box>
